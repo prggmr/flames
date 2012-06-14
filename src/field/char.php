@@ -7,6 +7,6 @@ namespace flames\field;
  */
 
 /**
- * The INTEGER
+ * The CHAR field
  */
-class Integer extends \flames\Field {}
+class Char extends \flames\Field {}

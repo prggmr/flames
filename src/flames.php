@@ -20,3 +20,4 @@ require $dir.'/driver/mysql.php';
 require $dir.'/model.php';
 require $dir.'/field.php';
 require $dir.'/field/integer.php';
+require $dir.'/field/char.php';

@@ -41,7 +41,7 @@ class Model {
      * If a constructor is need in a child use __init instead, thats right
      * two underscores!
      */
-    final public function __construct() 
+    final public function __construct(/* ... */) 
     {
         // Allow for a custom constructor within a Model
         if (method_exists($this, '__init')) {
@@ -85,10 +85,7 @@ class Model {
                 ));
             }
             // Add field
-            $this->_fields[] = [
-                $_field_name, 
-                $_field_obj
-            ];
+            $this->_fields[$_field_name] = $_field_obj;
             // destroy the property!
             unset($this->{$_field_name});
         }
@@ -111,5 +108,54 @@ class Model {
         }
         $this->_driver = $driver;
         return $this;
+    }
+
+    /**
+     * Sets a model property.
+     *
+     * @param  string  $prop  Property to set.
+     * @param  mixed  $val  Value to set the property.
+     *
+     * @return  void
+     */
+    final public function __set($prop, $val)
+    {
+        if (!isset($this->_fields[$prop])) {
+            throw new \RuntimeException(sprintf(
+                "Model %s has no field %s",
+                get_class($this), $prop
+            ));
+        }
+        $this->_dirty = true;
+        $this->_fields[$prop]->set_value($val);
+    }
+
+    /**
+     * Gets a model property.
+     *
+     * @param  string  $prop  Property to set.
+     * @param  mixed  $val  Value to set the property.
+     *
+     * @return  void
+     */
+    final public function __get($prop)
+    {
+        if (!isset($this->_fields[$prop])) {
+            throw new \RuntimeException(sprintf(
+                "Model %s has no field %s",
+                get_class($this), $prop
+            ));
+        }
+        return $this->_fields[$prop]->get_value($val);
+    }
+
+    /**
+     * Returns if the model is currently dirty and needs to be written.
+     *
+     * @return  boolean
+     */
+    public function is_dirty()
+    {
+        return $this->_dirty;
     }
 }

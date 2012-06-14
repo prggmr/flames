@@ -11,14 +11,33 @@
 require '../src/flames.php';
 
 class User extends flames\Model {
-    
-    /**
-     * Primary key
-     * 
-     * @type Integer(1)
+    /** 
+     * @type Integer(['default' => 1, 'max_length' => 75]) 
      */
     public $id;
+    /**
+     * @type Integer(['default' => 1, 'max_length' => 75]) 
+     */
+    public $name;
+    /**
+     * @type Char(['default' => 1, 'max_length' => 75]) 
+     */
+    public $first_name;
+    /** 
+     * @type Char(['default' => 1, 'max_length' => 75]) 
+     */
+    public $last_name;
+
+    /**
+     * To stirng
+     */
+    public function __toString()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }
 
 $user = new User();
-var_dump($user);
+$user->first_name = "Nick";
+$user->last_name = "Whiting";
+echo "Hello, $user".PHP_EOL;
