@@ -51,19 +51,46 @@ class Model {
         $class = new \ReflectionObject($this);
         $properties = $class->getProperties(\ReflectionProperty::IS_PUBLIC);
         foreach ($properties as $_prop) {
-            $_field = $this->{$_prop->getName()};
-            if (!$_field instanceof Field) {
+            $_field_name = $_prop->getName();
+            $_field = $this->{$_field_name};
+            $doc = explode("\n", str_replace(["*", "/"], "", $_prop->getDocComment()));
+            $block = null;
+            foreach ($doc as $_block) {
+                $_block = trim($_block);
+                if ($_block != "" && strpos($_block, '@type') === 0) {
+                    $block = $_block;
+                    break;
+                }
+            }
+            if (null === $block) {
+                throw new \LogicException(sprintf(
+                    "Field %s does not have a type definition"
+                ), $_field);
+            }
+            // Parse the field
+            $_field_obj = trim(str_replace("@type", "", $_block));
+            if (stripos($_field_obj, '(') !== false) {
+                // This is evil hahaha!
+                $_eval = '$_field_obj = new flames\\field\\'.$_field_obj.';';
+                eval($_eval);
+            } else {
+                $_field_obj = "flames\\field\\$_field_obj";
+                $_field_obj = new $_field_obj;
+            }
+            // Check if type
+            if (!$_field_obj instanceof Field) {
                 throw new \LogicException(sprintf(
                     'Field %s is not a flames field object',
                     $_prop->getName()
                 ));
             }
+            // Add field
             $this->_fields[] = [
-                $_prop->getName(), 
-                $_field
+                $_field_name, 
+                $_field_obj
             ];
             // destroy the property!
-            unset($this->{$_prop->getName()});
+            unset($this->{$_field_name});
         }
     }
 

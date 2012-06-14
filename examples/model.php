@@ -11,13 +11,13 @@
 require '../src/flames.php';
 
 class User extends flames\Model {
-    # Blame PHP for this requirement ...
-    # I want to do
-    # public $id = new flames\Field(); 
-    # just as much as you!
-    public function __init() {
-        $this->id = new flames\Field();
-    }
+    
+    /**
+     * Primary key
+     * 
+     * @type Integer(1)
+     */
+    public $id;
 }
 
 $user = new User();
