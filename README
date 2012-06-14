@@ -1,0 +1,32 @@
+A Django inspired ORM for PHP that doesn't suck!
+
+This project is still highly experimental and using it for anything you or 
+anyone else cares about is really living on the edge.
+
+## Installation
+
+Depending on your needs prggmr can be installed using two different methods.
+
+### Composer
+
+Include the following in your ```composer.json``` file.
+
+    {
+        "require": {
+            "prggmr/prggmr": "1.0.*"
+        }
+    }
+
+Run the installer.
+
+    php composer.phar install
+
+## Intentions
+
+Have an ORM that isn't 30,000 files and doesn't do some weird voodoo magic
+behind the scenes to make my SQL queries run.
+
+## EXPIREMENTAL
+
+I can't say this enough ... just don't use this library unless you like to cut
+yourself and bleed!

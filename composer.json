@@ -1,0 +1,17 @@
+{
+    "name": "prggmr/flames",
+    "description": "A Django inspired ORM for PHP that doesn't suck!",
+    "keywords": ["orm", "signals", "django"],
+    "license": "Apache 2.0",
+    "authors": [
+        {
+            "name": "Nickolas Whiting",
+            "email": "prggmr@gmail.com",
+            "homepage": "http://prggmr.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "prggmr": "1.2.*"
+    }
+}
