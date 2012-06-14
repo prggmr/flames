@@ -17,3 +17,5 @@ $dir = dirname(realpath(__FILE__));
 // start'er up
 require $dir.'/driver.php';
 require $dir.'/driver/mysql.php';
+require $dir.'/model.php';
+require $dir.'/field.php';

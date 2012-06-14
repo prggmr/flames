@@ -17,5 +17,4 @@ class MySQL extends \PDO {
 	 * Extend the main db driver class.
 	 */
 	use \flames\Driver;
-
 }
