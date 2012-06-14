@@ -48,7 +48,6 @@ class Model {
             $this->__init();
         }
         // Get all the public class properties
-        // I find this sloppy ... why!?!?!
         $class = new \ReflectionObject($this);
         $properties = $class->getProperties(\ReflectionProperty::IS_PUBLIC);
         foreach ($properties as $_prop) {
@@ -75,14 +74,15 @@ class Model {
      *
      * @return  object  $this
      */
-    public function set_driver($driver)
+    final public function set_driver($driver)
     {
         if (!$driver instanceof Driver) {
-            throw new \InvalidArgumentException;
+            throw new \InvalidArgumentException(sprintf(
+                "Invalid driver provided to the %s model",
+                get_class($this)
+            ));
         }
         $this->_driver = $driver;
         return $this;
     }
-
-
 }
