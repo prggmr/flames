@@ -11,19 +11,19 @@ namespace flames;
  */
 class Field {
 
-	/**
-	 * The default value of this field.
-	 */
-	protected $_default = null;
+    /**
+     * The default value of this field.
+     */
+    protected $_default = null;
 
-	/**
-	 * Returns the default value for this field.
-	 *
-	 * @return  null|string|int
-	 */
-	public function get_default_value()
-	{
-		return $this->_default;
-	}
+    /**
+     * Returns the default value for this field.
+     *
+     * @return  null|string|int
+     */
+    public function get_default_value()
+    {
+        return $this->_default;
+    }
 
 }
