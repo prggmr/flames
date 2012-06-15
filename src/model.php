@@ -154,8 +154,19 @@ class Model {
      *
      * @return  boolean
      */
-    public function is_dirty()
+    final public function is_dirty()
     {
         return $this->_dirty;
+    }
+
+    /**
+     * To string implementation.
+     */
+    public function __toString()
+    {
+        throw new \RuntimeException(sprintf(
+            'Model %s has no toString method implemented',
+            get_class($this)
+        ));
     }
 }

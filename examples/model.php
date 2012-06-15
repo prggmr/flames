@@ -11,6 +11,7 @@
 require '../src/flames.php';
 
 class User extends flames\Model {
+    
     /** 
      * @type Integer(['default' => 1, 'max_length' => 75]) 
      */
@@ -29,7 +30,7 @@ class User extends flames\Model {
     public $last_name;
 
     /**
-     * To stirng
+     * To string
      */
     public function __toString()
     {

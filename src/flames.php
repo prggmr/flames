@@ -21,3 +21,7 @@ require $dir.'/model.php';
 require $dir.'/field.php';
 require $dir.'/field/integer.php';
 require $dir.'/field/char.php';
+
+if (!class_exists('prggmr')) {
+    require_once 'prggmr/src/prggmr.php';
+}
