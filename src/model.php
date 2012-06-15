@@ -28,11 +28,11 @@ class Model {
     protected $_dirty = false;
 
     /**
-     * The database drive this model uses.
+     * The database connection driver this model uses.
      *
      * @var  null|object
      */
-    protected $_driver = null;
+    protected $_connection = null;
 
     /**
      * Constructs a new model this method is final because it is very
@@ -94,19 +94,13 @@ class Model {
     /**
      * Sets the driver for the model.
      *
-     * @param  object  $driver  The database driver.
+     * @param  object  $connection  The database driver connection.
      *
      * @return  object  $this
      */
-    final public function set_driver($driver)
+    final public function set_connection($connection)
     {
-        if (!$driver instanceof Driver) {
-            throw new \InvalidArgumentException(sprintf(
-                "Invalid driver provided to the %s model",
-                get_class($this)
-            ));
-        }
-        $this->_driver = $driver;
+        $this->_connection = $connection;
         return $this;
     }
 
