@@ -9,6 +9,79 @@ namespace flames;
 /**
  * DB Connections
  */
-static class Connections {
+final class Connections {
     
+    /**
+     * Current available connections.
+     * 
+     * @var  array
+     */
+    private static $_connections = [];
+
+    /**
+     * Default connection.
+     * 
+     * @var  string
+     */
+    private static $_default = null;
+
+    /**
+     * You cannot construct the connections!!
+     */
+    private function __construct() {}
+
+    /**
+     * Adds a new driver connection.
+     * 
+     * @param  object  $driver  flames\Driver
+     * @param  string  $name  Driver name identifier
+     * @param  boolean  $default  Make this default
+     *
+     * @return  void
+     */
+    public static function add($driver, $name, $default = false)
+    {
+        if (!is_string($name)) {
+            throw new \InvalidArgumentException("Invalid driver name");
+        }
+        $uses = class_uses($driver);
+        if (in_array('\flames\Driver', $uses)) {
+            throw new \InvalidArgumentException("Driver is not valid");
+        }
+        if (isset(static::$_connections[$name])) {
+            throw new \RuntimeException(sprintf(
+                "Driver by name %s already exists",
+                $name
+            ));
+        }
+        if ($default || static::$_default === null) {
+            static::$_default = $name;
+        } 
+        static::$_connections[$name] = $driver;
+    }
+
+    /**
+     * Returns a DB driver connection.
+     * 
+     * @param  string|null  $name  DB driver or null for default.
+     * @return  boolean|object  DB Driver|False if not exist
+     */
+    public static function get($name = null)
+    {
+        if ($name === null) {
+            if (static::$_default === null) {
+                throw new \RuntimeException(
+                    "A default connection has not been established."
+                );
+            }
+            return static::$_connections[static::$_default];
+        }
+        if (!isset(static::$_connections[$name])) {
+            throw new LogicException(sprintf(
+                "Unknown connection %s",
+                $name
+            ));
+        }
+        return static::$_connections[static::$_default];
+    }
 }

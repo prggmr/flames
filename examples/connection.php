@@ -10,6 +10,11 @@
  */
 require '../src/flames.php';
 
+
 // Same connection string as PDO
-$db = new flames\driver\MySQL('mysql:dbname=flames;host=127.0.0.1', 'root', '');
-var_dump($db);
+flames\Connections::add(new flames\driver\MySQL(
+    'mysql:dbname=flames;host=127.0.0.1', 
+    'root', 
+    ''
+), 'mysql');
+var_dump(flames\Connections::get());

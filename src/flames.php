@@ -15,6 +15,7 @@ define('FLAMES_MASTERMIND', 'Nickolas Whiting');
 $dir = dirname(realpath(__FILE__));
 
 // start'er up
+require $dir.'/connections.php';
 require $dir.'/driver.php';
 require $dir.'/driver/mysql.php';
 require $dir.'/model.php';
@@ -22,6 +23,6 @@ require $dir.'/field.php';
 require $dir.'/field/integer.php';
 require $dir.'/field/char.php';
 
-if (!class_exists('prggmr')) {
-    require_once 'prggmr/src/prggmr.php';
-}
+// if (!class_exists('prggmr')) {
+//     require_once 'prggmr/src/prggmr.php';
+// }
