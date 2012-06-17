@@ -163,4 +163,24 @@ class Model {
             get_class($this)
         ));
     }
+
+    /**
+     * Creates the table in the database.
+     *
+     * @return  void
+     */
+    public function create_table()
+    {
+        $this->_connection->create_table($this);
+    }
+
+    /**
+     * Returns the fields for the model.
+     *
+     * @return  array
+     */
+    public function get_fields()
+    {
+        
+    }
 }

@@ -16,5 +16,5 @@ flames\Connections::add(new flames\driver\MySQL(
     'mysql:dbname=flames;host=127.0.0.1', 
     'root', 
     ''
-), 'mysql');
-var_dump(flames\Connections::get());
+));
+var_dump(flames\Connections::get_connections());

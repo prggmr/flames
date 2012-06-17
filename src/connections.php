@@ -39,13 +39,15 @@ final class Connections {
      *
      * @return  void
      */
-    public static function add($driver, $name, $default = false)
+    public static function add($driver, $name = null, $default = false)
     {
-        if (!is_string($name)) {
+        if (null === $name) {
+            $name = str_replace('flames\\driver\\', '', get_class($driver));
+        } elseif (!is_string($name)) {
             throw new \InvalidArgumentException("Invalid driver name");
         }
         $uses = class_uses($driver);
-        if (in_array('\flames\Driver', $uses)) {
+        if (in_array('\flames\Driver', $uses) && $driver instanceof \PDO) {
             throw new \InvalidArgumentException("Driver is not valid");
         }
         if (isset(static::$_connections[$name])) {
@@ -64,6 +66,7 @@ final class Connections {
      * Returns a DB driver connection.
      * 
      * @param  string|null  $name  DB driver or null for default.
+     * 
      * @return  boolean|object  DB Driver|False if not exist
      */
     public static function get($name = null)
@@ -83,5 +86,15 @@ final class Connections {
             ));
         }
         return static::$_connections[static::$_default];
+    }
+
+    /**
+     * Returns the currently available connections.
+     *
+     * @return  array
+     */
+    public function get_connections()
+    {
+        return array_keys(static::$_connections);
     }
 }

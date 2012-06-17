@@ -28,7 +28,7 @@ class User extends flames\Model {
      * @type Char(['default' => 1, 'max_length' => 75]) 
      */
     public $last_name;
-
+    
     /**
      * To string
      */
