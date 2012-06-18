@@ -11,6 +11,24 @@ define('FLAMES_VERSION', '0.0.0-dev');
 // The creator
 define('FLAMES_MASTERMIND', 'Nickolas Whiting');
 
+if (!defined('FLAMES_CACHE_DIR')) {
+    define('FLAMES_CACHE_DIR', '/tmp/.flames-php-cache');
+}
+
+if (false !== FLAMES_CACHE_DIR) {
+    if (!is_dir(FLAMES_CACHE_DIR)) {
+        mkdir(FLAMES_CACHE_DIR);
+    }
+
+    if (!is_writeable(FLAMES_CACHE_DIR)) {
+        throw new RuntimeException(sprintf(
+            "flames cache dir %s is not writeable"
+        ), FLAMES_CACHE_DIR);
+    }
+    define('FLAMES_CACHE_MODELS', true);
+} else {
+    define('FLAMES_CACHE_MODELS', false);
+}
 
 $dir = dirname(realpath(__FILE__));
 

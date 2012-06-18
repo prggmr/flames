@@ -43,51 +43,55 @@ class Model {
      */
     final public function __construct(/* ... */) 
     {
+        if (FLAMES_CACHE_MODELS) {
+            if (!file_exists(sprintf('%s/%s.fmc')))
+        } else {
+            // Get all the public class properties
+            $class = new \ReflectionObject($this);
+            $properties = $class->getProperties(\ReflectionProperty::IS_PUBLIC);
+            foreach ($properties as $_prop) {
+                $_field_name = $_prop->getName();
+                $_field = $this->{$_field_name};
+                $doc = explode("\n", str_replace(["*", "/"], "", $_prop->getDocComment()));
+                $block = null;
+                foreach ($doc as $_block) {
+                    $_block = trim($_block);
+                    if ($_block != "" && strpos($_block, '@type') === 0) {
+                        $block = $_block;
+                        break;
+                    }
+                }
+                if (null === $block) {
+                    throw new \LogicException(sprintf(
+                        "Field %s does not have a type definition"
+                    ), $_field);
+                }
+                // Parse the field
+                $_field_obj = trim(str_replace("@type", "", $_block));
+                if (stripos($_field_obj, '(') !== false) {
+                    // This is evil hahaha!
+                    $_eval = '$_field_obj = new flames\\field\\'.$_field_obj.';';
+                    eval($_eval);
+                } else {
+                    $_field_obj = "flames\\field\\$_field_obj";
+                    $_field_obj = new $_field_obj;
+                }
+                // Check if type
+                if (!$_field_obj instanceof Field) {
+                    throw new \LogicException(sprintf(
+                        'Field %s is not a flames field object',
+                        $_prop->getName()
+                    ));
+                }
+                // Add field
+                $this->_fields[$_field_name] = $_field_obj;
+                // destroy the property!
+                unset($this->{$_field_name});
+            }
+        }
         // Allow for a custom constructor within a Model
         if (method_exists($this, '__init')) {
             $this->__init();
-        }
-        // Get all the public class properties
-        $class = new \ReflectionObject($this);
-        $properties = $class->getProperties(\ReflectionProperty::IS_PUBLIC);
-        foreach ($properties as $_prop) {
-            $_field_name = $_prop->getName();
-            $_field = $this->{$_field_name};
-            $doc = explode("\n", str_replace(["*", "/"], "", $_prop->getDocComment()));
-            $block = null;
-            foreach ($doc as $_block) {
-                $_block = trim($_block);
-                if ($_block != "" && strpos($_block, '@type') === 0) {
-                    $block = $_block;
-                    break;
-                }
-            }
-            if (null === $block) {
-                throw new \LogicException(sprintf(
-                    "Field %s does not have a type definition"
-                ), $_field);
-            }
-            // Parse the field
-            $_field_obj = trim(str_replace("@type", "", $_block));
-            if (stripos($_field_obj, '(') !== false) {
-                // This is evil hahaha!
-                $_eval = '$_field_obj = new flames\\field\\'.$_field_obj.';';
-                eval($_eval);
-            } else {
-                $_field_obj = "flames\\field\\$_field_obj";
-                $_field_obj = new $_field_obj;
-            }
-            // Check if type
-            if (!$_field_obj instanceof Field) {
-                throw new \LogicException(sprintf(
-                    'Field %s is not a flames field object',
-                    $_prop->getName()
-                ));
-            }
-            // Add field
-            $this->_fields[$_field_name] = $_field_obj;
-            // destroy the property!
-            unset($this->{$_field_name});
         }
     }
 
@@ -181,6 +185,6 @@ class Model {
      */
     public function get_fields()
     {
-        
+        return 
     }
 }
