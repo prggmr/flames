@@ -38,17 +38,20 @@ class User extends flames\Model {
     }
 }
 
-function milliseconds(/* ... */) {
-    return round(microtime(true) * 1000);
-}
+$user = new User(false);
 
-$microtime = milliseconds();
-for ($i = 0; $i != 10; $i++) {
-    $user = new User(false);
-}
-echo "Time taken : " . (( milliseconds() - $microtime ) / 6000 ). PHP_EOL;
-$microtime = milliseconds();
-for ($i = 0; $i != 10; $i++) {
-    $user = new User();
-}
-echo "Time taken : " . (( milliseconds() - $microtime ) / 6000 ). PHP_EOL;
+// DEBUGGING SOME PERFORMANCE STUFF
+// function milliseconds(/* ... */) {
+//     return round(microtime(true) * 1000);
+// }
+
+// $microtime = milliseconds();
+// for ($i = 0; $i != 10; $i++) {
+//     $user = new User(false);
+// }
+// echo "Time taken : " . (( milliseconds() - $microtime ) / 6000 ). PHP_EOL;
+// $microtime = milliseconds();
+// for ($i = 0; $i != 10; $i++) {
+//     $user = new User();
+// }
+// echo "Time taken : " . (( milliseconds() - $microtime ) / 6000 ). PHP_EOL;

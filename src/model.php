@@ -233,10 +233,13 @@ class Model {
     private function _load_cache(/* ... */)
     {
         $fname = $this->_generate_cache_fname();
-        if (!file_exists($fname)) {
+        $check = $this->_generate_checksum_fname();
+        if (!file_exists($fname) || !file_exists($check)) {
             return false;
         }
         $data = json_decode(file_get_contents($fname));
+        // tampered?
+        if (sha1($data) !== file_get_content($check)) return false;
         foreach ($data as $_field) {
             list($name, $field, $attr) = $_field;
             $attr = get_object_vars($attr);
@@ -268,7 +271,10 @@ class Model {
             unset($properties['__value']);
             $data[] = [$_name, get_class($_field), $properties];
         }
-        file_put_contents($this->_generate_cache_fname(), json_encode($data));
+        $write = json_encode($data);
+        $check = sha1($write);
+        file_put_contents($this->_generate_cache_fname(), $write);
+        file_put_contents($this->_generate_checksum_fname(), $check);
     }
 
     /**
@@ -279,6 +285,19 @@ class Model {
     private function _generate_cache_fname(/* ... */)
     {
         return sprintf('%s/%s.fmc', 
+            FLAMES_CACHE_DIR, 
+            str_replace('\\', '', strtolower(get_class($this)))
+        );
+    }
+
+    /**
+     * Generates the cache checksum filename.
+     *
+     * @return  string
+     */
+    private function _generate_checksum_fname(/* ... */)
+    {
+        return sprintf('%s/%s.fmcs', 
             FLAMES_CACHE_DIR, 
             str_replace('\\', '', strtolower(get_class($this)))
         );
