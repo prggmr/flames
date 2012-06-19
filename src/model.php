@@ -35,17 +35,51 @@ class Model {
     protected $_connection = null;
 
     /**
-     * Constructs a new model this method is final because it is very
-     * important.
+     * Constructs a new model.
      *
-     * If a constructor is need in a child use __init instead, thats right
-     * two underscores!
+     * If a constructor is need in a child use __init instead.
+     *
+     * The constructor accepts two different parameters for slot 1.
+     * 
+     * @param  boolean|array  $p1  Provided as a boolean this informs the class
+     *         to save a cache copy of itself. Provided as an array this informs
+     *         the class to automatically populate itself with the given 
+     *         key -> value map.
+     *
+     * @param  boolean  $igcache  Informs the class to ignore the cache 
+     *         completely. This should only be giving if you are sure you do not 
+     *         want the cache to load.
+     *
+     * @return  object  Model
      */
-    final public function __construct(/* ... */) 
+    final public function __construct($p1 = null, $igcache = false) 
     {
-        if (FLAMES_CACHE_MODELS) {
-            if (!file_exists(sprintf('%s/%s.fmc')))
-        } else {
+
+        // Turn on cache by default in the model
+        $load_cache = true;
+        $auto_fill = null;
+
+        if (null !== $p1) {
+            $bool = is_bool($p1);
+            $array = is_array($p1);
+            if (!$array && !$bool) {
+                throw new \InvalidArgumentException;
+            }
+            if ($bool) {
+                $load_cache = $bool;
+            } else {
+                // we will validate this data later
+                $auto_fill = $p1;
+            }
+        }
+
+        $save_cache = (FLAMES_CACHE_MODELS && $load_cache && !$igcache);
+
+        if ($save_cache) {
+            $has_cache = $this->_load_cache();
+        } 
+
+        if (!$has_cache) {
             // Get all the public class properties
             $class = new \ReflectionObject($this);
             $properties = $class->getProperties(\ReflectionProperty::IS_PUBLIC);
@@ -87,6 +121,9 @@ class Model {
                 $this->_fields[$_field_name] = $_field_obj;
                 // destroy the property!
                 unset($this->{$_field_name});
+            }
+            if ($save_cache) {
+                $this->_save_cache();
             }
         }
         // Allow for a custom constructor within a Model
@@ -173,7 +210,7 @@ class Model {
      *
      * @return  void
      */
-    public function create_table()
+    public function create_table(/* ... */)
     {
         $this->_connection->create_table($this);
     }
@@ -183,8 +220,67 @@ class Model {
      *
      * @return  array
      */
-    public function get_fields()
+    public function get_fields(/* ... */)
     {
-        return 
+        return;
+    }
+
+    /**
+     * Attempts to load the modal cache.
+     *
+     * @return  boolean  True if success|False otherwise
+     */
+    private function _load_cache(/* ... */)
+    {
+        $fname = $this->_generate_cache_fname();
+        if (!file_exists($fname)) {
+            return false;
+        }
+        $data = json_decode(file_get_contents($fname));
+        foreach ($data as $_field) {
+            list($name, $field, $attr) = $_field;
+            $attr = get_object_vars($attr);
+            // build our constructor
+            $construct = '$_field_obj = new '.$field.'([';
+            $iattr = [];
+            foreach ($attr as $_attr => $_val) {
+                $iattr[] = '"'.$_attr.'" => "'.$_val.'"';
+            }
+            $construct .= implode($iattr, ',') . ']);';
+            // HAHA more evil code!
+            eval($construct);
+            $this->_fields[$name] = $_field_obj;
+        }
+        return true;
+    }
+
+    /**
+     * Saves the model cache.
+     *
+     * @return  void
+     */
+    private function _save_cache(/* ... */)
+    {
+        $data = [];
+        foreach ($this->_fields as $_name => $_field) {
+            $properties = $_field->get_attributes();
+            // save all but the value
+            unset($properties['__value']);
+            $data[] = [$_name, get_class($_field), $properties];
+        }
+        file_put_contents($this->_generate_cache_fname(), json_encode($data));
+    }
+
+    /**
+     * Generates the cache filename for the model.
+     *
+     * @return  string
+     */
+    private function _generate_cache_fname(/* ... */)
+    {
+        return sprintf('%s/%s.fmc', 
+            FLAMES_CACHE_DIR, 
+            str_replace('\\', '', strtolower(get_class($this)))
+        );
     }
 }

@@ -34,7 +34,11 @@ class Field {
         if (null !== $options && is_array($options)) {
             // set the field options
             foreach ($options as $_option => $_val) {
-                $_internal = '_'.$_option;
+                if (stripos($_option, '_') !== 0){
+                    $_internal = '_'.$_option;
+                } else {
+                    $_internal = $_option;
+                }
                 if (!property_exists($this, $_internal)) {
                     throw new \LogicException(sprintf(
                         "Field %s does not have the option %s",
@@ -96,5 +100,15 @@ class Field {
     public function get_value($val)
     {
         return $this->__value;
+    }
+
+    /**
+     * Returns the fields attributes.
+     *
+     * @return  array
+     */
+    final public function get_attributes(/* ... */)
+    {
+        return get_object_vars($this);
     }
 }

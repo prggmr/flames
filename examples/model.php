@@ -38,7 +38,17 @@ class User extends flames\Model {
     }
 }
 
-$user = new User();
-$user->first_name = "Nick";
-$user->last_name = "Whiting";
-echo "Hello, $user".PHP_EOL;
+function milliseconds(/* ... */) {
+    return round(microtime(true) * 1000);
+}
+
+$microtime = milliseconds();
+for ($i = 0; $i != 10; $i++) {
+    $user = new User(false);
+}
+echo "Time taken : " . (( milliseconds() - $microtime ) / 6000 ). PHP_EOL;
+$microtime = milliseconds();
+for ($i = 0; $i != 10; $i++) {
+    $user = new User();
+}
+echo "Time taken : " . (( milliseconds() - $microtime ) / 6000 ). PHP_EOL;
