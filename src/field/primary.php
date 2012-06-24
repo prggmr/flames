@@ -7,9 +7,14 @@ namespace flames\field;
  */
 
 /**
- * The INTEGER
+ * PrimaryKey Field
  */
 class Primary extends \flames\field\Integer {
+
+    /**
+     * Field type
+     */
+    protected $_type = 'int';
 
     /**
      * Field create template

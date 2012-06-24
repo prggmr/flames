@@ -7,7 +7,7 @@ namespace flames\field;
  */
 
 /**
- * The INTEGER
+ * Foreignkey field
  */
 class Foreignkey extends \flames\field\Integer {
 
@@ -49,7 +49,6 @@ class Foreignkey extends \flames\field\Integer {
                 $to
             ));
         }
-        var_dump($options);
         $this->_to = new $to;
         return parent::set_attributes($options);
     }

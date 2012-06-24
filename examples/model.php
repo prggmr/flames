@@ -13,8 +13,9 @@ require '../src/flames.php';
 class User extends flames\Model {
     
     public $username = ['char', ['default' => 1, 'max_length' => 30]];
-    public $password = ['char', ['max_length' => 45]];
-    public $email = ['char', ['max_length' => 75]];
+    public $password = ['datetime'];
+    public $email = ['text'];
+    public $another = ['boolean'];
     
     /**
      * To string

@@ -7,17 +7,21 @@ namespace flames\field;
  */
 
 /**
- * Char Field
+ * Boolean
  */
-class Char extends \flames\Field {
-
-    /**
-     * Default length
-     */
-    protected $_max_length = 255;
-
+class Boolean extends \flames\Field {
     /**
      * Field type
      */
-    protected $_type = 'varchar';
+    protected $_type = 'tinyint';
+
+    /**
+     * Max length
+     */
+    protected $_max_length = 1;
+
+    /**
+     * Default value
+     */
+    protected $_default = 0;
 }

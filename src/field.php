@@ -140,8 +140,6 @@ class Field {
     /**
      * Returns the field creation string.
      *
-     * @param  string  $name  Name of the field
-     *  
      * @return  string
      */
     public function get_db_field()
