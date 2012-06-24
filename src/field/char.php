@@ -12,8 +12,12 @@ namespace flames\field;
 class Char extends \flames\Field {
 
     /**
+     * Default length
+     */
+    protected $_max_length = 255;
+
+    /**
      * Field type
      */
     protected $_type = 'varchar';
-
 }

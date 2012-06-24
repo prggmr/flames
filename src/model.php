@@ -92,7 +92,10 @@ class Model {
                 }
             }
             if (stripos($name, '\\') === false) {
-                $name = "\\flames\\field\\$name";
+                $name = sprintf(
+                    "\\flames\\field\\%s",
+                    ucfirst($name)
+                );
             }
             $field = new $name;
             if (!$field instanceof Field) {
@@ -112,18 +115,36 @@ class Model {
             $this->_fields[$_name] = $field;
             unset($this->$_name);
         }
+        // Do we have a name
+        if (null === $this->_table) {
+            $table = get_class($this);
+            if (strpos($table, '\\') === 0) {
+                $table = substr($table, 1);
+            }
+            $table = strtolower(str_replace('\\', '_', $table));
+            $this->_table = $table;
+        }
         // Do we not have a primary
         // Auto add if not false
         if (null === $this->_primary && false !== $this->_primary) {
             $primary = new field\Primary();
-            $name = sprintf(
-                '%s_id',
-                $this->_table
-            );
+            if (strpos($this->_table, '_') !== false) {
+                $name = explode('_', $this->_table);
+                $name = sprintf(
+                    '%s_id',
+                    $name[count($name) - 1]
+                );
+            } else {
+                $name = sprintf(
+                    '%s_id',
+                    $this->_table
+                );
+            }
             $primary->set_attributes([
                 'name' => $name
             ]);
             $this->_fields[$name] = $primary;
+            $this->_primary = $primary;
         }
         // Allow for a custom constructor within a Model
         if (method_exists($this, '__init')) {
@@ -261,11 +282,6 @@ class Model {
      */
     public function get_primary_key(/* ... */)
     {
-        foreach ($this->_fields as $_field) {
-            if ($_field instanceof fields\Primary) {
-                return $_field;
-            }
-        }
-        return null;
+        return $this->_primary;
     }
 }

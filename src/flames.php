@@ -41,6 +41,7 @@ require $dir.'/field.php';
 require $dir.'/field/integer.php';
 require $dir.'/field/char.php';
 require $dir.'/field/primary.php';
+require $dir.'/field/foreignkey.php';
 
 // if (!class_exists('prggmr')) {
 //     require_once 'prggmr/src/prggmr.php';

@@ -56,7 +56,7 @@ class MySQL extends \PDO {
         $fields = array_merge($fields, $keys);
         $sql .= implode(", ", $fields);
         $sql .= sprintf(
-            ' ) ENGINE=%s DEFAULT CHARSET=%s',
+            ' ) ENGINE=%s DEFAULT CHARSET=%s;',
             $model->get_engine(),
             $model->get_charset()
         );

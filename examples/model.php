@@ -12,11 +12,9 @@ require '../src/flames.php';
 
 class User extends flames\Model {
     
-    public $name = ['Integer', ['default' => 1, 'max_length' => 75]];
-    public $first_name = ['Char', ['default' => 1, 'max_length' => 75]];
-    public $last_name = ['Char', ['default' => 1, 'max_length' => 75]];
-
-    protected $_table = 'user';
+    public $username = ['char', ['default' => 1, 'max_length' => 30]];
+    public $password = ['char', ['max_length' => 45]];
+    public $email = ['char', ['max_length' => 75]];
     
     /**
      * To string
@@ -27,14 +25,25 @@ class User extends flames\Model {
     }
 }
 
+class Profile extends flames\Model {
+
+    public $first_name = ['char'];
+    public $last_name = ['char'];
+    public $user = ['foreignkey', ['to' => 'User']];
+}
+
 flames\Connections::add(new flames\driver\MySQL(
     'mysql:dbname=flames;host=127.0.0.1', 
     'root', 
     ''
 ));
-$user = new User(false);
+$user = new User();
 $user->set_connection(flames\Connections::get());
+$profile = new Profile();
+$profile->set_connection(flames\Connections::get());
 echo $user->create_table();
+echo PHP_EOL;
+echo $profile->create_table();
 // var_dump($user);
 // DEBUGGING SOME PERFORMANCE STUFF
 // function milliseconds(/* ... */) {
