@@ -9,4 +9,11 @@ namespace flames\field;
 /**
  * The CHAR field
  */
-class Char extends \flames\Field {}
+class Char extends \flames\Field {
+
+    /**
+     * Field type
+     */
+    protected $_type = 'varchar';
+
+}

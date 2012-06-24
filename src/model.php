@@ -35,20 +35,36 @@ class Model {
     protected $_connection = null;
 
     /**
-     * Field names to ignore when constructing the model.
+     * Property names to ignore when constructing the model.
      *
      * @var  array
      */
     protected $_ignore = [
-        '_ignore', '_connection', '_dirty', '_fields', '_table'
+        '_ignore', '_connection', '_dirty', '_fields', '_table', '_engine',
+        '_charset', '_primary'
     ];
 
     /**
-     * Table name
+     * Table name.
      *
      * @var  string
      */
     protected $_table = null;
+
+    /**
+     * Storage engine.
+     */
+    protected $_engine = 'InnoDB';
+
+    /**
+     * Model charset.
+     */
+    protected $_charset = 'utf8';
+
+    /**
+     * Primary key field set to false to prevent autogeneration.
+     */
+    protected $_primary = null;
 
     /**
      * Constructs a new model.
@@ -84,10 +100,30 @@ class Model {
                     "Not a valid field %s",
                     $name
                 ));
+            } elseif (false !== $this->_primary) {
+                if (null == $this->_primary) {
+                    if ($field instanceof field\Primary) {
+                        $this->_primary = $field;
+                    }
+                }
             }
+            $attributes['name'] = $_name;
             $field->set_attributes($attributes);
             $this->_fields[$_name] = $field;
             unset($this->$_name);
+        }
+        // Do we not have a primary
+        // Auto add if not false
+        if (null === $this->_primary && false !== $this->_primary) {
+            $primary = new field\Primary();
+            $name = sprintf(
+                '%s_id',
+                $this->_table
+            );
+            $primary->set_attributes([
+                'name' => $name
+            ]);
+            $this->_fields[$name] = $primary;
         }
         // Allow for a custom constructor within a Model
         if (method_exists($this, '__init')) {
@@ -175,7 +211,7 @@ class Model {
      */
     public function create_table(/* ... */)
     {
-        $this->_connection->create_table($this);
+        return $this->_connection->create_table($this);
     }
 
     /**
@@ -185,7 +221,7 @@ class Model {
      */
     public function get_table(/* ... */)
     {
-        $this->_table;
+        return $this->_table;
     }
 
     /**
@@ -196,5 +232,40 @@ class Model {
     public function get_fields(/* ... */)
     {
         return $this->_fields;
+    }
+
+    /**
+     * Returns the model storage engine.
+     *
+     * @return  string
+     */
+    public function get_engine(/* ... */)
+    {
+        return $this->_engine;
+    }
+
+    /**
+     * Returns the model charset.
+     *
+     * @return  string
+     */
+    public function get_charset(/* ... */)
+    {
+        return $this->_charset;
+    }
+
+    /**
+     * Returns the models primary keys, null if not exists.
+     *
+     * @return  null|object
+     */
+    public function get_primary_key(/* ... */)
+    {
+        foreach ($this->_fields as $_field) {
+            if ($_field instanceof fields\Primary) {
+                return $_field;
+            }
+        }
+        return null;
     }
 }

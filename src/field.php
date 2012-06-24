@@ -14,7 +14,7 @@ class Field {
     /**
      * The default value of this field.
      */
-    protected $_default = null;
+    protected $_default = '';
 
     /**
      * The max length of the field.
@@ -25,6 +25,21 @@ class Field {
      * The current value of the field.
      */
     protected $__value = null;
+
+    /**
+     * Field type
+     */
+    protected $_type = null;
+
+    /**
+     * Field create template
+     */
+    protected $_template = '`%s` %s(%s) %s';
+
+    /**
+     * The name of the field.
+     */
+    protected $_name = null;
 
     /**
      * Construct a field object.
@@ -120,5 +135,44 @@ class Field {
     final public function get_attributes(/* ... */)
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * Returns the field creation string.
+     *
+     * @param  string  $name  Name of the field
+     *  
+     * @return  string
+     */
+    public function get_db_field()
+    {
+        $default = ($this->_default == null) ? 'DEFAULT NULL' : 
+            ($this->_default == '') ? 'NOT NULL' : 'DEFAULT '.$this->_default;
+        return sprintf($this->_template,
+            $this->_name,
+            $this->_type, 
+            $this->_max_length, 
+            $default
+        );
+    }
+
+    /**
+     * Returns the field keys.
+     *
+     * @return  null|string
+     */
+    public function get_db_keys(/* ... */)
+    {
+        return null;
+    }
+
+    /**
+     * Returns the field name.
+     *
+     * @return  string
+     */
+    public function get_name(/* ... */)
+    {
+        return $this->_name;
     }
 }

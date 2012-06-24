@@ -9,4 +9,20 @@ namespace flames\field;
 /**
  * The INTEGER
  */
-class Integer extends \flames\Field {}
+class Integer extends \flames\Field {
+
+    /**
+     * Field type
+     */
+    protected $_type = 'int';
+
+    /**
+     * Default
+     */
+    protected $_max_length = 11;
+
+    /**
+     * Field create template
+     */
+    protected $_template = '`%s` %s(%s) unsigned %s';
+}
