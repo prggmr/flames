@@ -29,7 +29,18 @@ class Field {
     /**
      * Construct a field object.
      */
-    public function __construct($options = null)
+    public function __construct(/* ... */){}
+
+    /**
+     * Sets the field attributes
+     * 
+     * @param  array  $options  Field attribute options
+     *
+     * @throws  InvalidArgumentException  Unknown attribute
+     * 
+     * @return  void
+     */
+    public function set_attributes($options = null)
     {
         if (null !== $options && is_array($options)) {
             // set the field options
@@ -41,14 +52,13 @@ class Field {
                 }
                 if (!property_exists($this, $_internal)) {
                     throw new \LogicException(sprintf(
-                        "Field %s does not have the option %s",
-                        str_replace('flames\\field\\', '', get_class($this)),
-                        $_option
+                        "Unknown attribute %s for %s",
+                        $_option,
+                        str_replace('flames\\field\\', '', get_class($this))
                     ));
                 }
                 $this->{$_internal} = $_val;
             }
-
         }
     }
 
