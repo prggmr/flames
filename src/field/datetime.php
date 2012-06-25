@@ -17,15 +17,17 @@ class Datetime extends \flames\Field {
     protected $_template = '`%s` datetime %s';
 
     /**
+     * Default
+     */
+
+    /**
      * Returns the field creation string.
      *
      * @return  string
      */
     public function get_db_field()
     {
-        $default = ($this->_default == null) ? 'DEFAULT NULL' : 
-            ($this->_default == 'current_timestamp') ? 'CURRENT_TIMESTAMP' :
-            null;
+        $default = ($this->_default == null) ? 'DEFAULT NULL' : 'NOT NULL';
         return sprintf($this->_template,
             $this->_name,
             $default

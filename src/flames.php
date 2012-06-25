@@ -34,6 +34,7 @@ $dir = dirname(realpath(__FILE__));
 
 // start'er up
 require $dir.'/connections.php';
+require $dir.'/exception.php';
 require $dir.'/driver.php';
 require $dir.'/driver/mysql.php';
 require $dir.'/model.php';

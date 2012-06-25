@@ -42,9 +42,16 @@ $user = new User();
 $user->set_connection(flames\Connections::get());
 $profile = new Profile();
 $profile->set_connection(flames\Connections::get());
-echo $user->create_table();
-echo PHP_EOL;
-echo $profile->create_table();
+$user->create_table();
+$profile->create_table();
+
+// $prggmr = $user->select(['username' => 'prggmr']);
+// $prggmr->delete();
+
+// $user->username = "prggmr";
+// $user->password = sha1('newmedia');
+// $user->save();
+
 // var_dump($user);
 // DEBUGGING SOME PERFORMANCE STUFF
 // function milliseconds(/* ... */) {
@@ -52,8 +59,8 @@ echo $profile->create_table();
 // }
 
 // $microtime = milliseconds();
-// for ($i = 0; $i != 100000; $i++) {
-//     $user = new User(false);
+// for ($i = 0; $i != 10; $i++) {
+//     $user = new User();
 // }
 // echo "Time taken : " . (( milliseconds() - $microtime ) / 6000 ). PHP_EOL;
 // $microtime = milliseconds();

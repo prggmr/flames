@@ -19,21 +19,22 @@ class MySQL extends \PDO {
     use \flames\Driver;
 
     /**
+     * Latest SQL statement run
+     */
+    protected $_last_sql = null;
+
+    /**
      * Creates a new table.
      *
      * @param  object  $model  flames\Model instance
      * @param  boolean  $safe  Create if not exists
      *
-     * @return  void
+     * @throws  \flames\Exception  Creation failure
+     * 
+     * @return  boolean
      */
     public function create_table(\flames\Model $model, $safe = false)
     {
-        $create_str = "CREATE TABLE `test` (
-              `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-              `test` varchar(255) DEFAULT NULL,
-              `userid` int(11) DEFAULT NULL,
-              PRIMARY KEY (`id`),
-            ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
         if ($safe) {
             $safe = 'IF NOT EXISTS';
         } else {
@@ -60,6 +61,33 @@ class MySQL extends \PDO {
             $model->get_engine(),
             $model->get_charset()
         );
-        return $sql;
+        try {
+            $this->exec($sql);
+            return true;
+        } catch (PDOException $e) {
+            throw new \flames\Exception($e->getMessage());
+        }
     }
+
+    /**
+     * Executes an arbitary SQL statement.
+     *
+     * @return  int  Number of affected rows.
+     */
+    public function exec($sql)
+    {
+        $this->_last_sql = $sql;
+        return parent::exec($sql);
+    }
+
+    /**
+     * Returns the last sql statement run.
+     *
+     * @return  string
+     */
+    public function get_sql()
+    {
+        return $this->_last_sql;
+    }
+    
 }
