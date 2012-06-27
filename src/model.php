@@ -284,4 +284,19 @@ class Model {
     {
         return $this->_primary;
     }
+
+    /**
+     * Selects records from the database.
+     *
+     * @param  array  $fields  Array of fields to select.
+     *
+     * @return  this
+     */
+    public function select($fields = null) 
+    {
+        if (null === $fields) {
+            $fields = array_keys($this->_fields);
+        }
+    }
+    
 }
