@@ -29,3 +29,55 @@ behind the scenes to make my SQL queries run.
 
 I can't say this enough ... just don't use this library unless you like to cut
 yourself and bleed!
+
+## Usage
+
+### Establish a connection
+
+```php
+<?php
+flames\Connections::add(new flames\driver\MySQL(
+    'mysql:dbname=flames;host=127.0.0.1', 
+    'root', 
+    ''
+));
+```
+
+### Model structure
+
+```php
+<?php
+class User extends flames\Model {
+    
+    public $username = ['char', ['default' => 1, 'max_length' => 30]];
+    public $password = ['datetime'];
+    public $email = ['text'];
+    public $another = ['boolean'];
+    
+    /**
+     * To string
+     */
+    public function __toString()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+}
+
+// Profile with a key relationship to user
+class Profile extends Model {
+
+    public $first_name = ['char'];
+    public $last_name = ['char'];
+    public $user = ['foreignkey', ['to' => 'User']];
+}
+
+```
+
+### Create tables
+```php
+<?php
+$user = new User();
+$profile = new Profile();
+$user->create_table();
+$profile->create_table();
+```
