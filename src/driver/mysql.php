@@ -9,19 +9,8 @@ namespace flames\driver;
 /**
  * MySQL flames driver.
  *
- * For now this driver is blank :)
  */
-class MySQL extends \PDO {
-
-    /**
-     * Extend the main db driver class.
-     */
-    use \flames\Driver;
-
-    /**
-     * Latest SQL statement run
-     */
-    protected $_last_sql = null;
+class MySQL extends \flames\Driver {
 
     /**
      * Creates a new table.
@@ -61,33 +50,7 @@ class MySQL extends \PDO {
             $model->get_engine(),
             $model->get_charset()
         );
-        try {
-            $this->exec($sql);
-            return true;
-        } catch (PDOException $e) {
-            throw new \flames\Exception($e->getMessage());
-        }
+        $this->exec($sql);
+        return true;
     }
-
-    /**
-     * Executes an arbitary SQL statement.
-     *
-     * @return  int  Number of affected rows.
-     */
-    public function exec($sql)
-    {
-        $this->_last_sql = $sql;
-        return parent::exec($sql);
-    }
-
-    /**
-     * Returns the last sql statement run.
-     *
-     * @return  string
-     */
-    public function get_sql()
-    {
-        return $this->_last_sql;
-    }
-    
 }

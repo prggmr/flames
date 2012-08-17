@@ -34,5 +34,9 @@ class Select {
      *
      * @return  object
      */
-    public function __construct()
+    public function __construct($fields = null, $model = null) 
+    {
+        $this->_fields = $fields;
+        $this->_models[] = $model;
+    }
 }

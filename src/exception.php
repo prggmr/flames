@@ -9,4 +9,4 @@ namespace flames;
 /**
  * Flames Exception
  */
-class Exception extends \PDOException {}
+class Exception extends \Exception {}

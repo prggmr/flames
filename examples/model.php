@@ -10,7 +10,18 @@
  */
 require '../src/flames.php';
 
-class User extends flames\Model {
+class Model extends flames\Model {
+
+    public function __init()
+    {
+        $this->set_connection(flames\Connections::get());
+        // enable transactions
+        $this->_connection->set_transactions(true);
+    }
+
+}
+
+class User extends Model {
     
     public $username = ['char', ['default' => 1, 'max_length' => 30]];
     public $password = ['datetime'];
@@ -26,7 +37,7 @@ class User extends flames\Model {
     }
 }
 
-class Profile extends flames\Model {
+class Profile extends Model {
 
     public $first_name = ['char'];
     public $last_name = ['char'];
@@ -38,12 +49,13 @@ flames\Connections::add(new flames\driver\MySQL(
     'root', 
     ''
 ));
+
 $user = new User();
-$user->set_connection(flames\Connections::get());
 $profile = new Profile();
-$profile->set_connection(flames\Connections::get());
 $user->create_table();
 $profile->create_table();
+// Select info
+// $user = $user->select()->where(['id' => 1]);
 
 // $prggmr = $user->select(['username' => 'prggmr']);
 // $prggmr->delete();
@@ -51,20 +63,3 @@ $profile->create_table();
 // $user->username = "prggmr";
 // $user->password = sha1('newmedia');
 // $user->save();
-
-// var_dump($user);
-// DEBUGGING SOME PERFORMANCE STUFF
-// function milliseconds(/* ... */) {
-//     return round(microtime(true) * 1000);
-// }
-
-// $microtime = milliseconds();
-// for ($i = 0; $i != 10; $i++) {
-//     $user = new User();
-// }
-// echo "Time taken : " . (( milliseconds() - $microtime ) / 6000 ). PHP_EOL;
-// $microtime = milliseconds();
-// for ($i = 0; $i != 10; $i++) {
-//     $user = new User();
-// }
-// echo "Time taken : " . (( milliseconds() - $microtime ) / 6000 ). PHP_EOL;

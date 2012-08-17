@@ -228,11 +228,13 @@ class Model {
     /**
      * Creates the table in the database.
      *
+     * @param  boolean  $safe  Create the table if it doesnt exist
+     *
      * @return  void
      */
-    public function create_table(/* ... */)
+    public function create_table($safe = false)
     {
-        return $this->_connection->create_table($this);
+        return $this->_connection->create_table($this, $safe);
     }
 
     /**
@@ -297,6 +299,10 @@ class Model {
         if (null === $fields) {
             $fields = array_keys($this->_fields);
         }
+        return new \flames\query\Select($fields, $this);
     }
     
+    /**
+     * 
+     */
 }

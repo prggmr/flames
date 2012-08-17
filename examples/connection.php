@@ -17,4 +17,4 @@ flames\Connections::add(new flames\driver\MySQL(
     'root', 
     ''
 ));
-var_dump(flames\Connections::get_connections());
+var_dump(flames\Connections::get());
