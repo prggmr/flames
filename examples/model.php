@@ -55,7 +55,14 @@ $profile = new Profile();
 $user->create_table();
 $profile->create_table();
 // Select info
-// $user = $user->select()->where(['id' => 1]);
+$user = $user->select([
+    'CONCAT(username, " ", email) AS something'
+])->where(['id' => 1]);
+
+$user = $user->select()->where(['id__like' => 1]);
+
+
+
 
 // $prggmr = $user->select(['username' => 'prggmr']);
 // $prggmr->delete();

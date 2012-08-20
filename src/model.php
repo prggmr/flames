@@ -67,6 +67,16 @@ class Model {
     protected $_primary = null;
 
     /**
+     * Determines if the listeners have been registered for each signal.
+     */
+    protected $_has_registered = [
+        'select' => false,
+        'insert' => false,
+        'delete' => false,
+        'update' => false
+    ];
+
+    /**
      * Constructs a new model.
      *
      * If a constructor is need in a child use __init instead.
@@ -298,6 +308,12 @@ class Model {
     {
         if (null === $fields) {
             $fields = array_keys($this->_fields);
+        }
+        if (false === $this->_has_registered['select']) {
+            // Handle the select statement
+            \prggmr\handle(new signals\Select($this), function(){
+
+            });
         }
         return new \flames\query\Select($fields, $this);
     }
