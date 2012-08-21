@@ -26,7 +26,7 @@ class Signal extends \prggmr\signal\Complex {
      */
     public function __construct($model)
     {
-        $this->_model = $model
+        $this->_model = $model;
     }
     
     /**
@@ -39,7 +39,7 @@ class Signal extends \prggmr\signal\Complex {
     public function evaluate($signal = null) 
     {
         if (!$signal instanceof Signal) return false;
-        if ($signal->get_model() === $this->_model) return true;
+        if ($signal->get_model() instanceof $this->_model) return true;
         return false;
     }
 

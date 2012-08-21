@@ -43,24 +43,12 @@ class Event extends \prggmr\Event {
      */
     public function __construct($model, $sql)
     {
-        $this->_model = $model
+        $this->_model = $model;
         $this->_original_sql = $this->sql = $sql;
     }
     
     /**
      * Returns the original SQL statement given to the event.
-     *
-     * @return  boolean
-     */
-    public function get_original_sql(/* ... */) 
-    {
-        return $this->_original_sql;
-    }
-
-    /**
-     * Returns the SQL statement associated to the event.
-     *
-     * This SQL statement may have been modified.
      *
      * @return  boolean
      */

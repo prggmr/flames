@@ -10,7 +10,7 @@ namespace flames\query;
 /**
  * Select Query
  *
- * This allows for building a SELECT statement
+ * This allows for building and executing a SELECT statement
  */
 class Select {
 
@@ -38,5 +38,19 @@ class Select {
     {
         $this->_fields = $fields;
         $this->_models[] = $model;
+    }
+
+    /**
+     * Executes the select query.
+     *
+     * @return  object  \flames\Event
+     */
+    public function exec()
+    {
+        $event = new \flames\events\Select($this->_models[0], 'SELECT * FROM nowhere');
+        return \prggmr\signal(
+            new \flames\signals\Select($this->_models[0]),
+            $event
+        );
     }
 }

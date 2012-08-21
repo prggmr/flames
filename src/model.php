@@ -41,7 +41,7 @@ class Model {
      */
     protected $_ignore = [
         '_ignore', '_connection', '_dirty', '_fields', '_table', '_engine',
-        '_charset', '_primary'
+        '_charset', '_primary', '_has_registered'
     ];
 
     /**
@@ -310,10 +310,9 @@ class Model {
             $fields = array_keys($this->_fields);
         }
         if (false === $this->_has_registered['select']) {
-            // Handle the select statement
-            \prggmr\handle(new signals\Select($this), function(){
-
-            });
+            // Check if the listener has been registered previously
+            $this->_has_registered['select'] = true;
+            \prggmr\listen(new \flames\listener\Select($this));
         }
         return new \flames\query\Select($fields, $this);
     }
