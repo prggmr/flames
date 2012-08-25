@@ -49,7 +49,7 @@ class Select {
     {
         $event = new \flames\events\Select($this->_models[0], 'SELECT * FROM nowhere');
         return \prggmr\signal(
-            new \flames\signals\Select($this->_models[0]),
+            new \flames\signal\Select(),
             $event
         );
     }

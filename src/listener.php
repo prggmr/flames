@@ -14,11 +14,9 @@ class Listener extends \prggmr\Listener
     /**
      * Constructs a new listener.
      *
-     * @param  object  $model
-     *
      * @return  void
      */
-    public function __construct($model) 
+    public function __construct() 
     {
         foreach (get_class_methods($this) as $_method) {
             // skip magic methods
@@ -28,10 +26,10 @@ class Listener extends \prggmr\Listener
             if (!in_array($_signal, ['select', 'update', 'delete', 'insert'])) {
                 throw new \DomainException;
             }
-            $_signal = "\\flames\\signals\\$_signal";
-            $_signal = new $_signal($model);
+            $_signal = "\\flames\\signal\\$_signal";
+            $_signal = new $_signal();
             $this->_sig_handlers[] = [
-                $_method,
+                new \prggmr\Handle([$this, $_method], 10),
                 $_signal
             ];
         }

@@ -23,10 +23,6 @@ class User extends \flames\Model {
     }
 }
 
-class Test extends \flames\Model {
-public $email = ['text'];
-}
-
 class User_Listener extends \flames\Listener {
 
     /**
@@ -39,6 +35,10 @@ class User_Listener extends \flames\Listener {
 
 }
 
+prggmr\signal_interrupt(new \flames\signal\Select(), function(){
+    echo "Interrupting this shit!";
+});
+
 /**
  * Register the listener
  */
@@ -49,3 +49,5 @@ class User_Listener extends \flames\Listener {
  */
 $model = new User();
 $record = $model->select()->exec();
+
+var_dump(\prggmr\prggmr());

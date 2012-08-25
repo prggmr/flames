@@ -309,10 +309,9 @@ class Model {
         if (null === $fields) {
             $fields = array_keys($this->_fields);
         }
-        if (false === $this->_has_registered['select']) {
-            // Check if the listener has been registered previously
-            $this->_has_registered['select'] = true;
-            \prggmr\listen(new \flames\listener\Select($this));
+        if (!defined('FLAMES_SELECT_REGISTERED')) {
+            define('FLAMES_SELECT_REGISTERED', true);
+            \prggmr\listen(new \flames\listener\Select());
         }
         return new \flames\query\Select($fields, $this);
     }
