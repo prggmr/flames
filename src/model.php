@@ -244,7 +244,7 @@ class Model {
      */
     public function create_table($safe = false)
     {
-        return $this->_connection->create_table($this, $safe);
+        return $this->get_connection()->create_table($this, $safe);
     }
 
     /**
@@ -317,6 +317,12 @@ class Model {
     }
     
     /**
-     * 
+     * Returns the connection instance
+     *
+     * @return  object
      */
+    public function get_connection()
+    {
+        return Connections::get($this->_connection);
+    }
 }

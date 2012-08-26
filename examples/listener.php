@@ -6,24 +6,9 @@
  */
 
 require_once 'connection.php';
+require_once 'model.php';
 
-class User extends \flames\Model {
-    
-    public $username = ['char', ['default' => 1, 'max_length' => 30]];
-    public $password = ['datetime'];
-    public $email = ['text'];
-    public $another = ['boolean'];
-    
-    /**
-     * To string
-     */
-    public function __toString()
-    {
-        return $this->first_name . ' ' . $this->last_name;
-    }
-}
-
-class User_Listener extends \flames\Listener {
+class Select_Listener extends \flames\Listener {
 
     /**
      * On a select statement
@@ -35,14 +20,24 @@ class User_Listener extends \flames\Listener {
 
 }
 
-prggmr\signal_interrupt(new \flames\signal\Select(), function(){
-    echo "Interrupting this shit!";
+prggmr\signal_interrupt(new \flames\signal\Select(), new \prggmr\Handle(function(){
+    echo "Interrupting select statements!!".PHP_EOL;
+    echo "Maybe I'll check the cache".PHP_EOL;
+}, null));
+
+// I will interrupt only on the User Model!!
+prggmr\signal_interrupt(new \flames\signal\model\Select(new User()), function(){
+    echo "This will interrupt only user selects!".PHP_EOL;
+});
+
+prggmr\signal_interrupt(new \flames\signal\model\Select(new Profile()), function(){
+    echo "This will interrupt only profile selects!".PHP_EOL;
 });
 
 /**
  * Register the listener
  */
-\prggmr\listen(new User_Listener(new User()));
+\prggmr\listen(new Select_Listener());
 
 /**
  * Create a model and do something to it
@@ -50,4 +45,5 @@ prggmr\signal_interrupt(new \flames\signal\Select(), function(){
 $model = new User();
 $record = $model->select()->exec();
 
-var_dump(\prggmr\prggmr());
+$profile = new Profile();
+$profile_record = $profile->select()->exec();

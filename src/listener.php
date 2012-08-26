@@ -10,7 +10,7 @@ namespace flames;
  * Base class for handling flames signals
  */
 class Listener extends \prggmr\Listener 
-{
+{   
     /**
      * Constructs a new listener.
      *
@@ -28,8 +28,14 @@ class Listener extends \prggmr\Listener
             }
             $_signal = "\\flames\\signal\\$_signal";
             $_signal = new $_signal();
+            $_priority = "{$_method}_priority";
+            $_exhaust = "{$_method}_exhaust";
             $this->_sig_handlers[] = [
-                new \prggmr\Handle([$this, $_method], 10),
+                new \prggmr\Handle(
+                    [$this, $_method],
+                    $this->$_exhaust, 
+                    $this->$_priority
+                ),
                 $_signal
             ];
         }

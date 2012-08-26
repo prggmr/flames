@@ -8,15 +8,14 @@
 /**
  * A Model
  */
-require '../src/flames.php';
+require_once 'connection.php';
 
 class Model extends flames\Model {
 
     public function __init()
     {
-        $this->set_connection(flames\Connections::get());
         // enable transactions
-        $this->_connection->set_transactions(true);
+        $this->get_connection()->set_transactions(true);
     }
 
 }
@@ -43,30 +42,3 @@ class Profile extends Model {
     public $last_name = ['char'];
     public $user = ['foreignkey', ['to' => 'User']];
 }
-
-flames\Connections::add(new flames\driver\MySQL(
-    'mysql:dbname=flames;host=127.0.0.1', 
-    'root', 
-    ''
-));
-
-$user = new User();
-$profile = new Profile();
-$user->create_table();
-$profile->create_table();
-// Select info
-$user = $user->select([
-    'CONCAT(username, " ", email) AS something'
-])->where(['id' => 1]);
-
-$user = $user->select()->where(['id__like' => 1]);
-
-
-
-
-// $prggmr = $user->select(['username' => 'prggmr']);
-// $prggmr->delete();
-
-// $user->username = "prggmr";
-// $user->password = sha1('newmedia');
-// $user->save();

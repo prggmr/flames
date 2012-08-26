@@ -10,8 +10,4 @@ namespace flames\signal;
  * Base signal used for models to issue - SELECT, UPDATE, DELETE and INSERT
  * commands.
  */
-class Base extends \prggmr\Signal {
-    public function __construct() {
-        $this->_info = 'flames_'.strtolower(get_class($this));
-    }
-}
+class Base extends \prggmr\signal\objects\Signal {}

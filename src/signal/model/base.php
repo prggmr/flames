@@ -40,7 +40,7 @@ class Base extends \prggmr\signal\Complex {
      */
     public function evaluate($signal = null) 
     {
-        if (!$signal instanceof Signal) return false;
+        if (!$signal instanceof Base) return false;
         if ($signal->get_model() instanceof $this->_model) return true;
         return false;
     }

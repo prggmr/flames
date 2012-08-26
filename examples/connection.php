@@ -8,7 +8,7 @@
 /**
  * Connect to a database
  */
-require '../src/flames.php';
+require_once '../src/flames.php';
 
 
 // Same connection string as PDO
