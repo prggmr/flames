@@ -10,4 +10,4 @@ namespace flames\signal;
  * Base signal used for models to issue - SELECT, UPDATE, DELETE and INSERT
  * commands.
  */
-class Base extends \prggmr\signal\objects\Signal {}
+class Base extends \prggmr\module\objects\Signal {}

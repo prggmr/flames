@@ -13,57 +13,50 @@ namespace flames\events;
 class Event extends \prggmr\Event {
 
     /**
-     * The model object this event represents
+     * The query object this event represents
      *
      * @var  object
      */
-    protected $_model = null;
+    protected $_query = null;
 
     /**
-     * The sql query code generated for the given event.
+     * The sql statement for the given event.
      *
      * @var  string
      */
-    public $sql = null;
+    protected $_statement = null;
 
     /**
-     * The original SQL code injected into the event.
-     *
-     * @var  string
-     */
-    protected $_original_sql = null;
-
-    /**
-     * Constructs a new flames event.
+     * Constructs a new flames query event.
      *
      * @param  object  $model
      * @param  object  $sql
      *
      * @return  void
      */
-    public function __construct($model, $sql)
+    public function __construct($query, \PDOStatement $statement)
     {
-        $this->_model = $model;
-        $this->_original_sql = $this->sql = $sql;
-    }
-    
-    /**
-     * Returns the original SQL statement given to the event.
-     *
-     * @return  boolean
-     */
-    public function get_original_sql(/* ... */) 
-    {
-        return $this->_original_sql;
+        $this->_query = $query;
+        $this->_statement = $statement;
     }
 
     /**
-     * Returns the model being used in the signal.
+     * Returns the SQL statement for the event.
+     *
+     * @return  boolean
+     */
+    public function get_statement(/* ... */) 
+    {
+        return $this->_statement;
+    }
+
+    /**
+     * Returns the query being used in the signal.
      *
      * @return  object
      */
-    public function get_model(/* ... */)
+    public function get_query(/* ... */)
     {
-        return $this->_model;
+        return $this->_query;
     }
 }

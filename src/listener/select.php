@@ -28,6 +28,12 @@ class Select extends \flames\Listener
      */
     public function on_select(\flames\events\Select $event)
     {
-        echo "Running the select command".PHP_EOL;
+        $statement = $event->get_statement();
+        $query = $event->get_query();
+        $query->bind($statement);
+        var_dump($statement);
+        var_dump($query->get_bind());
+        $statement->execute();
+        var_dump($statement->fetchAll());
     }
 }

@@ -15,7 +15,7 @@ class Select_Listener extends \flames\Listener {
      */
     public function on_select(\flames\events\Select $event) 
     {
-        echo "Running SQL $event->sql".PHP_EOL;
+        echo "Running SQL ".$event->get_sql();
     }
 
 }

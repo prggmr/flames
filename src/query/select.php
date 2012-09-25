@@ -12,49 +12,32 @@ namespace flames\query;
  *
  * This allows for building and executing a SELECT statement
  */
-class Select {
+class Select extends Base {
+
+    use Where;
 
     /**
-     * Fields to select in the query.
+     * Builds the SELECT statement query.
      *
-     * @var  array|null
+     * @return  object  PDOStatement
      */
-    protected $_fields = null;
-
-    /**
-     * Models used within the select query.
-     * 
-     */
-    protected $_models = null;
-
-    /**
-     * Constructs a new select query.
-     *
-     * @param  null|array  Fields to select.
-     *
-     * @return  object
-     */
-    public function __construct($fields = null, $model = null) 
+    public function build_query(/* ... */)
     {
-        $this->_fields = $fields;
-        $this->_models[] = $model;
-    }
-
-    /**
-     * Executes the select query.
-     *
-     * @return  object  \flames\Event
-     */
-    public function exec()
-    {
-        $event = new \flames\events\Select($this->_models[0], 'SELECT * FROM nowhere');
-        $model_signal = \prggmr\signal(
-            new \flames\signal\model\Select($this->_models[0]),
-            $event
-        );
-        $select_signal = \prggmr\signal(
-            new \flames\signal\Select(),
-            $event
-        );
+        $query = "SELECT";
+        // Field selection
+        $fields = [];
+        foreach ($this->_fields as $_field) {
+            $fields[] = sprintf('`%s`', $_field);
+        }
+        $query .= ' '.implode(', ', $fields);
+        // Table Selection
+        $tables = [];
+        foreach ($this->_models as $_model) {
+            $tables[] = $_model->get_table();
+        }
+        $query .= ' FROM '.implode(', ', $tables);
+        // WHERE clause
+        $query .= $this->build_where();
+        return $this->_models[0]->get_connection()->prepare($query);
     }
 }

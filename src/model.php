@@ -153,7 +153,9 @@ class Model {
             $primary->set_attributes([
                 'name' => $name
             ]);
-            $this->_fields[$name] = $primary;
+            // So Jesse Boyer can have the ID first ... it bugs the crap outta him ...
+            $tmp = [$name => $primary];
+            $this->_fields = $tmp + $this->_fields;
             $this->_primary = $primary;
         }
         // Allow for a custom constructor within a Model
@@ -295,6 +297,16 @@ class Model {
     public function get_primary_key(/* ... */)
     {
         return $this->_primary;
+    }
+
+    /**
+     * Returns if the model has the given field.
+     *
+     * @return  boolean
+     */
+    public function has_field($field)
+    {
+        return isset($this->_fields[$field]);
     }
 
     /**
