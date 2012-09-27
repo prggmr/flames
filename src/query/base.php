@@ -19,12 +19,12 @@ class Base {
      *
      * @var  array|null
      */
-    protected $_fields = null;
+    protected $_fields = [];
 
     /**
      * Models used within the query.
      */
-    protected $_models = null;
+    protected $_models = [];
 
     /**
      * Constructs a new query.

@@ -1,5 +1,5 @@
 <?php
-namespace flames\query\where;
+namespace flames\query\lookup;
 /**
  * Copyright 2010-12 Nickolas Whiting. All rights reserved.
  * Use of this source code is governed by the Apache 2 license
@@ -8,14 +8,21 @@ namespace flames\query\where;
 
 
 /**
- * Base Where Clause
+ * Base Where lookup
  *
- * This allows for building where clause statements.
+ * This allows for building where lookup statements.
  */
-class Base {
+class Base implements \flames\query\bind\Value {
 
     /**
-     * Field used in the clause.
+     * Value to be returned
+     *
+     * @var  array
+     */
+    protected $_value = [];
+
+    /**
+     * Field used in the lookup.
      *
      * @var  string
      */
@@ -33,7 +40,7 @@ class Base {
      *
      * @param  string  $field  
      * @param  string|null  $key  PDO bind key
-     * @param  mixed  $value  The value for the clause
+     * @param  mixed  $value  The value for the lookup
      *
      * @return  void
      */
@@ -44,17 +51,17 @@ class Base {
     }
 
     /**
-     * Returns the SQL Where clause.
+     * Returns the SQL Where lookup.
      *
      * @return  string
      */
-    public function get_clause(/* ... */)
+    public function get_lookup(/* ... */)
     {
         throw new \RuntimeException('Method not implemented');
     }
 
     /**
-     * Returns the field value.
+     * Returns the value
      *
      * @return  string
      */

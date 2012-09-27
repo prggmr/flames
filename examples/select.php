@@ -12,4 +12,4 @@ require_once 'model.php';
  * Create a model and do something to it
  */
 $model = new User();
-$record = $model->select()->where(['username__isnull'])->exec()->first();
+$record = $model->select()->where(['username__notnull'])->exec()->first();

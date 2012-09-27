@@ -1,5 +1,5 @@
 <?php
-namespace flames\query\where;
+namespace flames\query\lookup;
 /**
  * Copyright 2010-12 Nickolas Whiting. All rights reserved.
  * Use of this source code is governed by the Apache 2 license
@@ -8,24 +8,33 @@ namespace flames\query\where;
 
 
 /**
- * __like Clause
+ * __like lookup
  *
  * Builds f ILI ?
  */
 class Ilike extends Base {
 
     /**
-     * Returns the SQL Where clause.
+     * Returns the SQL Where lookup.
      *
      * @return  string
      */
-    public function get_clause(/* ... */)
+    public function get_lookup(/* ... */)
     {
         return sprintf(
-            "%s ILIKE '%%%s%%'",
+            "%s ILIKE %s",
             $this->_field,
             $this->_key
         );
     }
 
+    /**
+     * Returns the value
+     *
+     * @return  string
+     */
+    public function get_value(/* ... */)
+    {
+        return '%'.$this->_value.'%';
+    }
 }

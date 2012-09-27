@@ -19,7 +19,7 @@ class Select extends Base {
     /**
      * Builds the SELECT statement query.
      *
-     * @return  object  PDOStatement
+     * @return  object  PDOStatement`
      */
     public function build_query(/* ... */)
     {
@@ -36,7 +36,7 @@ class Select extends Base {
             $tables[] = $_model->get_table();
         }
         $query .= ' FROM '.implode(', ', $tables);
-        // WHERE clause
+        // WHERE lookup
         $query .= $this->build_where();
         return $this->_models[0]->get_connection()->prepare($query);
     }

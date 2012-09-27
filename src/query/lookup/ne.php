@@ -1,5 +1,5 @@
 <?php
-namespace flames\query\where;
+namespace flames\query\lookup;
 /**
  * Copyright 2010-12 Nickolas Whiting. All rights reserved.
  * Use of this source code is governed by the Apache 2 license
@@ -8,23 +8,21 @@ namespace flames\query\where;
 
 
 /**
- * __e Clause 
+ * __ne lookup
  *
- * This is also the default
- *
- * Builds f = ?
+ * Builds f != ?
  */
-class E extends Base {
+class Ne extends Base {
 
     /**
-     * Returns the SQL Where clause.
+     * Returns the SQL Where lookup.
      *
      * @return  string
      */
-    public function get_clause(/* ... */)
+    public function get_lookup(/* ... */)
     {
         return sprintf(
-            "%s = %s",
+            "%s != %s",
             $this->_field,
             $this->_key
         );

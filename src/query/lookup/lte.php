@@ -1,5 +1,5 @@
 <?php
-namespace flames\query\where;
+namespace flames\query\lookup;
 /**
  * Copyright 2010-12 Nickolas Whiting. All rights reserved.
  * Use of this source code is governed by the Apache 2 license
@@ -8,22 +8,23 @@ namespace flames\query\where;
 
 
 /**
- * __isnull Clause
+ * __lte lookup 
  *
- * Builds f IS NULL
+ * Builds f <= ?
  */
-class Isnull extends Base {
+class Lte extends Base {
 
     /**
-     * Returns the SQL Where clause.
+     * Returns the SQL Where lookup.
      *
      * @return  string
      */
-    public function get_clause(/* ... */)
+    public function get_lookup(/* ... */)
     {
         return sprintf(
-            "%s IS NULL",
-            $this->_field
+            "%s <= %s",
+            $this->_field,
+            $this->_key
         );
     }
 
