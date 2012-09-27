@@ -46,15 +46,18 @@ class Base {
      */
     public function get_model(/* ... */)
     {
-        return $this->_model[0];
+        return $this->_models[0];
     }
 
     /**
-     * Executes the query.
+     * Executes the query.php
+     *
+     * @param  boolean  $return_event  Return the event rather than a Result 
+     *                                 object.
      *
      * @return  object  \flames\Event
      */
-    public function exec()
+    public function exec($return_event = false)
     {
         $name = array_pop(explode('\\', get_class($this)));
         $event = '\\flames\\events\\'.$name;
@@ -69,6 +72,7 @@ class Base {
             new $signal(),
             $event
         );
+        return ($return_event) ? $event : $event->get_result();
     }
 
     /**

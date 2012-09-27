@@ -86,4 +86,14 @@ abstract class Driver extends \PDO {
         }
         throw new \InvalidArgumentException();
     }
+
+    /**
+     * Returns if transactions are to be used for queries.
+     *
+     * @return  boolean
+     */
+    public function use_transactions(/* ... */)
+    {
+        return $this->_transaction;
+    }
 }

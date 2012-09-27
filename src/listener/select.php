@@ -31,9 +31,22 @@ class Select extends \flames\Listener
         $statement = $event->get_statement();
         $query = $event->get_query();
         $query->bind($statement);
-        var_dump($statement);
-        var_dump($query->get_bind());
-        $statement->execute();
-        var_dump($statement->fetchAll());
+        $connection = $query->get_model()->get_connection();
+        $transactions = $connection->use_transactions();
+        if ($transactions) {
+            $connection->beginTransaction();
+        }
+        try {
+            $statement->execute();
+        } catch (\PDOException $e) {
+            if ($transactions) {
+                $connection->rollback();
+            }
+            throw new \flames\Exception($e->getMessage());
+        }
+        $event->set_result(new \flames\query\Results_Wrapper(
+            $statement->fetchAll(\PDO::FETCH_ASSOC),
+            $query->get_model()
+        ));
     }
 }

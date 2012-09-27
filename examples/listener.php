@@ -9,7 +9,6 @@ require_once 'connection.php';
 require_once 'model.php';
 
 class Select_Listener extends \flames\Listener {
-
     /**
      * On a select statement
      */
@@ -17,7 +16,6 @@ class Select_Listener extends \flames\Listener {
     {
         echo "Running SQL ".$event->get_sql();
     }
-
 }
 
 prggmr\signal_interrupt(new \flames\signal\Select(), new \prggmr\Handle(function(){

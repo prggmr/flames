@@ -24,4 +24,17 @@ class Boolean extends \flames\Field {
      * Default value
      */
     protected $_default = 0;
+
+
+    /**
+     * Sets the current value.
+     *
+     * @param  mixed  $val  Value to set the field.
+     *
+     * @return  object  this
+     */
+    public function set_value($val)
+    {
+        $this->__value = (true == $val);
+    }
 }

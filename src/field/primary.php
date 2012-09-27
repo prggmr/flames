@@ -33,4 +33,16 @@ class Primary extends \flames\field\Integer {
             $this->_name
         );
     }
+
+    /**
+     * Sets the current value.
+     *
+     * @param  mixed  $val  Value to set the field.
+     *
+     * @return  object  this
+     */
+    public function set_value($val)
+    {
+        $this->__value = intval($val);
+    }
 }

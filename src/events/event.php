@@ -27,6 +27,13 @@ class Event extends \prggmr\Event {
     protected $_statement = null;
 
     /**
+     * Result of the SQL query statement.
+     *
+     * @var  string
+     */
+    protected $_result = null;
+
+    /**
      * Constructs a new flames query event.
      *
      * @param  object  $model
@@ -58,5 +65,27 @@ class Event extends \prggmr\Event {
     public function get_query(/* ... */)
     {
         return $this->_query;
+    }
+
+    /**
+     * Sets the results of the query.
+     *
+     * @param  boolean|object|integer  $result  Result of the query
+     *
+     * @return  void
+     */
+    public function set_result($result)
+    {
+        $this->_result = $result;
+    }
+
+    /**
+     * Returns the event query results.
+     *
+     * @return  boolean|object|integer
+     */
+    public function get_result(/* ... */)
+    {
+        return $this->_result;
     }
 }

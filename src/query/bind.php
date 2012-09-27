@@ -32,20 +32,30 @@ trait Bind {
      * @param  string  $name  Parameter name
      * @param  mixed  $value  Parameter value
      *
-     * @return  string  Name of the bound parameter
+     * @return  void
      */
     protected function _bind($name, $value)
     {
         if (!$this->_has_bind) { 
             $this->_has_bind = true;
         }
-        $name = sprintf(':%s', $name);
         $this->_bind[$name] = $value;
-        return $name;
     }
 
     /**
-     * Executes the binding of parameters in the query.
+     * Converts a variable into a PDO bindable variable.
+     *
+     * @param  string  $var  Variable to convert.
+     *
+     * @return  string
+     */
+    public function to_bind_var($var)
+    {
+        return sprintf(':%s', $var);
+    }
+
+    /**
+     * Performs the binding of parameters in the query.
      *
      * @param  object  $statement  PDO Statement
      *

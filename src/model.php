@@ -41,7 +41,7 @@ class Model {
      */
     protected $_ignore = [
         '_ignore', '_connection', '_dirty', '_fields', '_table', '_engine',
-        '_charset', '_primary', '_has_registered'
+        '_charset', '_primary'
     ];
 
     /**
@@ -67,23 +67,15 @@ class Model {
     protected $_primary = null;
 
     /**
-     * Determines if the listeners have been registered for each signal.
-     */
-    protected $_has_registered = [
-        'select' => false,
-        'insert' => false,
-        'delete' => false,
-        'update' => false
-    ];
-
-    /**
      * Constructs a new model.
      *
      * If a constructor is need in a child use __init instead.
      *
+     * @param  array  $values  Default values for the model properties
+     *
      * @return  object  Model
      */
-    final public function __construct() 
+    final public function __construct($values = []) 
     {
         $properties = get_object_vars($this);
         foreach ($properties as $_name => $_property) {
@@ -157,6 +149,11 @@ class Model {
             $tmp = [$name => $primary];
             $this->_fields = $tmp + $this->_fields;
             $this->_primary = $primary;
+        }
+        if (count($values) != 0) {
+            foreach ($values as $_key => $_value) {
+                $this->{$_key} = $_value;
+            }
         }
         // Allow for a custom constructor within a Model
         if (method_exists($this, '__init')) {
