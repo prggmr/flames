@@ -12,4 +12,10 @@ require_once 'model.php';
  * Create a model and do something to it
  */
 $model = new User();
-$record = $model->select()->where(['username__notnull'])->exec()->first();
+$record = $model->select()->where([
+    ['username__endswith' => 'prgr'],
+    [
+        '|email__like' => 'nwhitin',
+        '|password__isnull'
+    ]
+])->exec()->first();
