@@ -71,7 +71,6 @@ abstract class Driver extends \PDO {
      */
     public function exec_statement(\PDOStatement $statement, Query $query)
     {
-        var_dump($statement);
         $query->bind($statement);
         $transactions = $this->use_transactions();
         if ($transactions) {

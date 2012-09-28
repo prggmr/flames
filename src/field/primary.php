@@ -44,7 +44,7 @@ class Primary extends \flames\field\Integer {
     public function set_value($val)
     {
         if ($val !== null) {
-            $val = intval($val)
+            $val = intval($val);
         }
         $this->__value = $val;
     }

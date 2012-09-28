@@ -19,3 +19,6 @@ $profile = new Profile();
 // Give the "true" parameter to make it create safe ( IF NOT EXISTS )
 $profile->create_table(true);
 
+$credt = new Credit();
+$credt->create_table(true);
+

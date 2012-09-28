@@ -28,15 +28,19 @@ require_once 'model.php';
 /**
  * Now lets select that profile we just saved
  */
-$profile = new Profile();
-$profile = $profile->select()->where(['first_name' => 'Nick'])->exec()->first();
-echo $profile->first_name.PHP_EOL;
-echo $profile->user->email.PHP_EOL;
+// $profile = new Profile();
+// $profile = $profile->select()->where(['first_name' => 'Nick'])->exec()->first();
+// echo $profile->first_name.PHP_EOL;
+// echo $profile->user->email.PHP_EOL;
 
-/**
- * Now Update
- */
-$profile->first_name = "Nickolas";
+// /**
+//  * Now Update
+//  */
+// $profile->first_name = "Nickolas";
+// $profile->save()->exec();
+// $profile->delete()->exec();
+// var_dump($profile);
+
+$profile = new Credit();
+$profile->card_number = '527893459823749587234958';
 $profile->save()->exec();
-$profile->delete()->exec();
-var_dump($profile);

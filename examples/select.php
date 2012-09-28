@@ -13,9 +13,12 @@ require_once 'model.php';
  */
 $model = new User();
 $record = $model->select()->where([
-    ['username__endswith' => 'prgr'],
-    [
-        '|email__like' => 'nwhitin',
-        '|password__isnull'
-    ]
+    ['username__startswith' => 'jboyer'],
 ])->exec()->first();
+
+echo $record->user_id.PHP_EOL;
+$record->username = "jboyer";
+$query = $record->delete();
+var_dump($query);
+$record->delete()->exec();
+echo $record->user_id.PHP_EOL;

@@ -13,7 +13,7 @@ namespace flames\query\results;
  * Bundles the results from a SELECT query to allow for iteration and simple
  * retrieval of query results.
  */
-class Wrapper implements \Iterator {
+class Wrapper implements \Iterator, \ArrayAccess {
 
     use \prggmr\Storage;
 
@@ -150,6 +150,12 @@ class Wrapper implements \Iterator {
         return $this->reset();
     }
 
+    public function offsetGet($offset) {
+        return $this->_make_model($this->_storage[$offset]);
+    }
+    public function offsetSet($offset, $value){}
+    public function offsetUnset($offset){}
+    public function offsetExists($offset){}
     /**
      * Maps a result to a model object.
      *
