@@ -22,7 +22,7 @@ class Isnull extends Base {
     public function get_lookup(/* ... */)
     {
         return sprintf(
-            "%s IS NULL",
+            "`%s` IS NULL",
             $this->_field
         );
     }

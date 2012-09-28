@@ -22,7 +22,7 @@ class Like extends Base {
     public function get_lookup(/* ... */)
     {
         return sprintf(
-            '%s LIKE %s',
+            '`%s` LIKE %s',
             $this->_field,
             $this->_key
         );

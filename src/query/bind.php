@@ -66,8 +66,9 @@ trait Bind {
         if (!$this->_has_bind) return;
         foreach ($this->_bind as $_name => $_value) {
             if ($_value instanceof bind\Value) {
-                $_value->get_value();
+                $_value = $_value->get_value();
             }
+            echo $_value.PHP_EOL;
             switch ($_value) {
                 case is_int($_value):
                     $type = \PDO::PARAM_INT;

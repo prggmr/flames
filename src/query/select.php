@@ -23,21 +23,22 @@ class Select extends Base {
      */
     public function build_query(/* ... */)
     {
-        $query = "SELECT";
+        $query = ["SELECT"];
         // Field selection
         $fields = [];
         foreach ($this->_fields as $_field) {
             $fields[] = sprintf('`%s`', $_field);
         }
-        $query .= ' '.implode(', ', $fields);
+        $query[] = implode(', ', $fields);
         // Table Selection
         $tables = [];
         foreach ($this->_models as $_model) {
             $tables[] = $_model->get_table();
         }
-        $query .= ' FROM '.implode(', ', $tables);
+        $query[] = 'FROM';
+        $query[] = implode(', ', $tables);
         // WHERE lookup
-        $query .= $this->build_where();
-        return $this->_models[0]->get_connection()->prepare($query);
+        $query[] = $this->build_where();
+        return $this->_models[0]->get_connection()->prepare(implode(" ", $query));
     }
 }

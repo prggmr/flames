@@ -22,7 +22,7 @@ class Lte extends Base {
     public function get_lookup(/* ... */)
     {
         return sprintf(
-            "%s <= %s",
+            "`%s` <= %s",
             $this->_field,
             $this->_key
         );

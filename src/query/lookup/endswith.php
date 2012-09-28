@@ -22,7 +22,7 @@ class Endswith extends Base {
     public function get_lookup(/* ... */)
     {
         return sprintf(
-            "%s LIKE %s",
+            "`%s` LIKE %s",
             $this->_field,
             $this->_key
         );
@@ -35,6 +35,6 @@ class Endswith extends Base {
      */
     public function get_value(/* ... */)
     {
-        return $this->_value;
+        return "%".$this->_value;
     }
-}˛
+}

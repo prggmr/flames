@@ -30,6 +30,7 @@ class Select extends \flames\Listener
     {
         $statement = $event->get_statement();
         $query = $event->get_query();
+        var_dump($statement);
         $query->bind($statement);
         $connection = $query->get_model()->get_connection();
         $transactions = $connection->use_transactions();

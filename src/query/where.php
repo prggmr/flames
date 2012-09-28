@@ -51,24 +51,31 @@ trait Where {
     public function build_where(/* ... */)
     {
         if (count($this->_where) == 0) return null;
-        return "WHERE ".$this->_build_where($this->_where);
+        $query = [];
+        $query[] = "WHERE";
+        $query[] = $this->_build_where($this->_where);
+        return implode(" ", $query);
     }
 
     /**
      * Builds the where lookup.
      */
-    protected function _build_where($fields)
+    protected function _build_where($fields, $count = 0)
     {
-        $query = "";
-        foreach ($this->_where as $_field => $_value) {
+        $query = [];
+        foreach ($fields as $_field => $_value) {
             if (is_array($_value)) {
                 // Build a grouped where
-                $query .= $this->_build_group_block($_value);
+                $query[] = $this->_build_group_block($_value, $count);
             } else {
-                $query .= $this->_build_field_block($_field, $_value);
+                if (is_int($_field)) {
+                    $_field = null;
+                }
+                $query[] = $this->_build_field_block($_field, $_value, $count);
             }
+            $count++;
         }
-        return $query;
+        return implode(" ", $query);
     }
 
     /**
@@ -78,18 +85,22 @@ trait Where {
      *
      * @return  string
      */
-    protected function _build_group_block($array)
+    protected function _build_group_block($array, $count = 0)
     {
         // Parse the first block and check for join clauses if not set
-        $first = current($array);
-        $clause = $this->_where_clause($first, false);
-        $block = sprintf(
-            '%s(',
-            ($clause['clause'] !== false) ? ' '.$clause['clause'] : ''
-        );
-        $block .= $this->_build_where($array);
-        $block .= ')';
-        return $block;
+        $first = key($array);
+        $clause = $this->_where_clause($first, $count);
+        $block = [];
+        if (false !== $clause['clause']) {
+            $block[] = $clause['clause'];
+            $new = [$clause['field'] => $array[$first]];
+            unset($array[$first]);
+            $array = $new + $array;
+        }
+        $block[] = '(';
+        $block[] = $this->_build_where($array);
+        $block[] = ')';
+        return implode(" ", $block);
     }
 
     /**
@@ -98,23 +109,24 @@ trait Where {
      * @param  string  $field  The field name
      * @param  null|string|array  $value  The field value.
      *
-     * @return  object  lookup\Base object
+     * @return  string  Field lookup block
      */
-    protected function _build_field_block($field = null, $value = null)
+    protected function _build_field_block($field = null, $value = null, $count = 0)
     {
-        $block = '';
+        $block = [];
         $key = null;
-        $bind = false;
+        $bind = true;
+        $clause = false;
         // For fields that do not use values
         if (null === $field) {
-            $clause = $this->_where_clause($value);
+            $clause = $this->_where_clause($value, $count);
             $bind = false;
             $value = null;
         } else {
-            $clause = $this->_where_clause($field);
+            $clause = $this->_where_clause($field, $count);
         }
         $field = $clause['field'];
-        $clause = $cluse['clause'];
+        $clause = $clause['clause'];
         if ($bind) {
             $key = $this->to_bind_var($field);
         }
@@ -122,11 +134,11 @@ trait Where {
         if ($bind) {
             $this->_bind($key, $lookup);
         }
-        return sprintf(
-            '%s%s',
-            ($clause !== false) ? ' '.$clause : '',
-            $lookup->get_lookup()
-        );
+        if (false !== $clause) {
+            $block[] = $clause;
+        }
+        $block[] = $lookup->get_lookup();
+        return implode(" ", $block);
     }
     
     /**
@@ -136,14 +148,15 @@ trait Where {
      *
      * @return  array  ['clause'=>('AND','OR'),'field'=>'Field without clause']
      */
-    protected function _where_clause($field, $default = false)
+    protected function _where_clause($field, $count = 0)
     {
+        $default = ($count >= 1) ? 'AND' : false;
         switch (true) {
-            case (stripos('&', $field) !== false):
+            case (stripos($field, '&') !== false):
                 $clause = 'AND';
                 $field = str_replace('&', '', $field);
                 break;
-            case (stripos('|', $field) !== false):
+            case (stripos($field, '|') !== false):
                 $clause = 'OR';
                 $field = str_replace('|', '', $field);
                 break;

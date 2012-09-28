@@ -19,7 +19,7 @@ class Base implements \flames\query\bind\Value {
      *
      * @var  array
      */
-    protected $_value = [];
+    protected $_value = null;
 
     /**
      * Field used in the lookup.
@@ -48,6 +48,7 @@ class Base implements \flames\query\bind\Value {
     {
         $this->_field = $field;
         $this->_key = $key;
+        $this->_value = $value;
     }
 
     /**

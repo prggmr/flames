@@ -10,9 +10,16 @@ namespace flames\query\lookup;
 /**
  * __in lookup
  *
+ * 
+ *
  * Builds f IN [?, ?, ?]
  */
 class In extends Base {
+
+    public function __construct()
+    {
+        throw new \RuntimeException("In lookups are currently not supported");
+    }
 
     /**
      * Returns the SQL Where lookup.
