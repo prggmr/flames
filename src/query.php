@@ -59,7 +59,8 @@ class Query {
      */
     public function exec($return_event = false)
     {
-        $name = array_pop(explode('\\', get_class($this)));
+        $array = explode('\\', get_class($this));
+        $name = array_pop();
         $event = '\\flames\\query\\event\\'.$name;
         $model = '\\flames\\signal\\model\\'.$name;
         $signal = '\\flames\\signal\\'.$name;

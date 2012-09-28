@@ -28,8 +28,8 @@ class Listener extends \prggmr\Listener
             }
             $_signal = "\\flames\\signal\\$_signal";
             $_signal = new $_signal();
-            $_priority = "{$_method}_priority";
-            $_exhaust = "{$_method}_exhaust";
+            $_priority = "_{$_method}_priority";
+            $_exhaust = "_{$_method}_exhaust";
             $this->_sig_handlers[] = [
                 new \prggmr\Handle(
                     [$this, $_method],
