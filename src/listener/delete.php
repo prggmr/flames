@@ -14,7 +14,7 @@ class Delete extends \flames\Listener
     /**
      * Exhaust of the on select
      */
-    protected $_on_delete_exhaust = 0;
+    protected $_on_delete_exhaust = null;
 
     /**
      * Priority of the on select

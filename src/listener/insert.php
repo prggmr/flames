@@ -14,7 +14,7 @@ class Insert extends \flames\Listener
     /**
      * Exhaust of the on select
      */
-    protected $_on_insert_exhaust = 0;
+    protected $_on_insert_exhaust = null;
 
     /**
      * Priority of the on select
