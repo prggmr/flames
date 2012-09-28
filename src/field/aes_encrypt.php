@@ -9,22 +9,14 @@ namespace flames\field;
 /**
  * Binary
  */
-class Binary extends \flames\Field {
+class AES_Encrypt extends Binary {
     
     /**
-     * Field type
+     * The Hash key.
+     *
+     * @var  string
      */
-    protected $_type = 'binary';
-
-    /**
-     * Max length
-     */
-    protected $_max_length = 100;
-
-    /**
-     * Default value
-     */
-    protected $_default = '';
+    protected $_key = '';
 
     /**
      * Returns a SQL wrapper function to use for insert/update for a field.
@@ -33,6 +25,10 @@ class Binary extends \flames\Field {
      */
     public function get_save_function($bind)
     {
-        return false;
+        return sprintf(
+            'AES_ENCRYPT(%s, "%s")',
+            $bind,
+            $this->_key
+        );
     }
 }

@@ -73,4 +73,58 @@ class Foreignkey extends \flames\field\Integer {
             $this->_to->get_primary_key()->get_name()
         );
     }
+
+    /**
+     * Sets the current value.
+     *
+     * @param  mixed  $val  Value to set the field.
+     *
+     * @return  object  this
+     */
+    public function set_value($val)
+    {
+        $this->__value = $val;
+        if (is_object($val) && $val instanceof \flames\Model) {
+            $this->_key = $val;
+        } else {
+            $this->_key = $val;
+        }
+    }
+
+    /**
+     * Gets the current value.
+     *
+     * @param  boolean  $select  Select the value if not set.
+     *
+     * @return  object
+     */
+    public function get_value($select = true)
+    {
+        if ($select && !is_object($this->__value)) {
+            $object = new $this->_to();
+            if (null !== $this->__value) {
+                $this->__value = $object->select()->where([
+                    $object->get_primary_key()->get_name() => $this->__value
+                ])->exec()->first();
+            } else {
+                $this->__value = $object;
+            }
+
+        }
+        return $this->__value;
+    }
+
+    /**
+     * Gets the current value converted for the database.
+     *
+     * @return  mixed
+     */
+    public function get_bind_value(/* ... */)
+    {
+        if (is_object($this->__value)) {
+            return $this->__value->get_primary_key()->get_bind_value();
+        } else {
+            return $this->__value;
+        }
+    }
 }

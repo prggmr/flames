@@ -5,6 +5,8 @@
  * that can be found in the LICENSE file.
  */
 
+date_default_timezone_set('UTC');
+
 /**
  * Connect to a database
  */

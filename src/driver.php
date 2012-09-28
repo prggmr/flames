@@ -24,6 +24,20 @@ abstract class Driver extends \PDO {
     protected $_transactions = false;
 
     /**
+     * Constructs a new driver.
+     *
+     * @param  string  $dsn  PDO DSN Connection strin
+     * @param  string  $username  Username
+     * @param  string  $password  Password
+     * @param  array  $driver_options  Driver Options
+     */
+    public function __construct($dsn, $username = null, $password = null, $driver_options = [])
+    {
+        parent::__construct($dsn, $username, $password, $driver_options);
+        $this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    }
+
+    /**
      * Executes an arbitary SQL statement.
      *
      * @return  int  Number of affected rows.
@@ -45,6 +59,35 @@ abstract class Driver extends \PDO {
             $this->commit();
         }
         return $result;
+    }
+
+    /**
+     * Executes a PDO Statement.
+     *
+     * @param  object  $statement \PDOStatement
+     * @param  object  $query  \flames\Query
+     * 
+     * @return
+     */
+    public function exec_statement(\PDOStatement $statement, Query $query)
+    {
+        var_dump($statement);
+        $query->bind($statement);
+        $transactions = $this->use_transactions();
+        if ($transactions) {
+            $this->beginTransaction();
+        }
+        try {
+            $statement->execute();
+        } catch (\PDOException $e) {
+            if ($transactions) {
+                $this->rollback();
+            }
+            throw new \flames\Exception($e->getMessage());
+        }
+        if ($transactions) {
+            $this->commit();
+        }
     }
 
     /**

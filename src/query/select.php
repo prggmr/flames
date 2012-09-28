@@ -12,7 +12,7 @@ namespace flames\query;
  *
  * This allows for building and executing a SELECT statement
  */
-class Select extends Base {
+class Select extends \flames\Query {
 
     use Where;
 

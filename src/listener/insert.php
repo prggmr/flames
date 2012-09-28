@@ -7,31 +7,31 @@ namespace flames\listener;
  */
 
 /**
- * Listening handle used for running SELECT statements
+ * Listening handle used for running INSERT statements
  */
-class Select extends \flames\Listener 
+class Insert extends \flames\Listener 
 {
     /**
      * Exhaust of the on select
      */
-    protected $_on_select_exhaust = 0;
+    protected $_on_insert_exhaust = 0;
 
     /**
      * Priority of the on select
      */
-    protected $_on_select_priority = 10;
+    protected $_on_insert_priority = 10;
 
     /**
      * Performs an SQL SELECT query.
      *
      * @return  boolean
      */
-    public function on_select(\flames\query\event\Select $event)
+    public function on_insert(\flames\query\event\Insert $event)
     {
         $this->exec_query($event);
-        $event->set_result(new \flames\query\results\Wrapper(
-            $event->get_statement()->fetchAll(\PDO::FETCH_ASSOC),
-            $event->get_query()->get_model()
-        ));
+        $model = $event->get_query()->get_model();
+        $insertid = $model->get_connection()->lastInsertId();
+        $model->get_primary_key()->set_value($insertid);
+        return $insertid;
     }
 }

@@ -9,12 +9,12 @@ namespace flames;
 /**
  * The base field!
  */
-class Field {
+class Field implements query\bind\Value {
 
     /**
      * The default value of this field.
      */
-    protected $_default = '';
+    protected $_default = null;
 
     /**
      * The max length of the field.
@@ -122,9 +122,19 @@ class Field {
      *
      * @return  mixed
      */
-    public function get_value($val)
+    public function get_value(/* ... */)
     {
         return $this->__value;
+    }
+
+    /**
+     * Gets the value converted for the database.
+     *
+     * @return  mixed
+     */
+    public function get_bind_value(/* ... */)
+    {
+        return (null === $this->__value) ? $this->_default : $this->__value;
     }
 
     /**
@@ -144,7 +154,7 @@ class Field {
      */
     public function get_db_field()
     {
-        $default = ($this->_default == null) ? 'DEFAULT NULL' : 
+        $default = (null === $this->_default) ? 'DEFAULT NULL' : 
             ($this->_default == '') ? 'NOT NULL' : 'DEFAULT '.$this->_default;
         return sprintf($this->_template,
             $this->_name,
@@ -162,6 +172,18 @@ class Field {
     public function get_db_keys(/* ... */)
     {
         return null;
+    }
+
+    /**
+     * Returns a SQL wrapper function to use for insert/update for a field.
+     *
+     * @param  string  $bind  The PDO Bind parameter for the save.
+     *
+     * @return  string
+     */
+    public function get_save_function($bind)
+    {
+        return $bind;
     }
 
     /**

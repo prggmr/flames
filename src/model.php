@@ -128,7 +128,7 @@ class Model {
         }
         // Do we not have a primary
         // Auto add if not false
-        if (null === $this->_primary && false !== $this->_primary) {
+        if (null === $this->_primary) {
             $primary = new field\Primary();
             if (strpos($this->_table, '_') !== false) {
                 $name = explode('_', $this->_table);
@@ -155,6 +155,8 @@ class Model {
                 $this->{$_key} = $_value;
             }
         }
+        // Model construction does not make it dirty
+        $this->_dirty = false;
         // Allow for a custom constructor within a Model
         if (method_exists($this, '__init')) {
             $this->__init();
@@ -210,7 +212,7 @@ class Model {
                 get_class($this), $prop
             ));
         }
-        return $this->_fields[$prop]->get_value($val);
+        return $this->_fields[$prop]->get_value();
     }
 
     /**
@@ -311,7 +313,7 @@ class Model {
      *
      * @param  array  $fields  Array of fields to select.
      *
-     * @return  this
+     * @return  \flames\Query
      */
     public function select($fields = null) 
     {
@@ -323,6 +325,56 @@ class Model {
             \prggmr\listen(new \flames\listener\Select());
         }
         return new \flames\query\Select($fields, $this);
+    }
+
+    /**
+     * Saves a model record.
+     *
+     * If the model has a primary key set it will attempt to update the model 
+     * otherwise it will attempt to insert a new record.
+     *
+     * @return  \flames\Query
+     */
+    public function save(/* ... */)
+    {
+        if ($this->get_primary_key()->get_value() === null) {
+            if (!defined('FLAMES_INSERT_REGISTERED')) {
+                define('FLAMES_INSERT_REGISTERED', true);
+                \prggmr\listen(new \flames\listener\Insert());
+            }
+            $query = new \flames\query\Insert($this->get_fields(), $this);
+        } else {
+            if (!defined('FLAMES_UPDATE_REGISTERED')) {
+                define('FLAMES_UPDATE_REGISTERED', true);
+                \prggmr\listen(new \flames\listener\Update());
+            }
+            $query = new \flames\query\Update($this->get_fields(), $this);
+        }
+        return $query;
+    }
+
+    /**
+     * Deletes records from the database.
+     *
+     * @return  \flames\Query
+     */
+    public function delete() 
+    {
+        if (!defined('FLAMES_DELETE_REGISTERED')) {
+            define('FLAMES_DELETE_REGISTERED', true);
+            \prggmr\listen(new \flames\listener\Delete());
+        }
+        return new \flames\query\Delete($fields, $this);
+    }
+
+    /**
+     * Marks a model as no longer dirty
+     *
+     * @return  void
+     */
+    public function clean(/* ... */)
+    {
+        $this->_dirty = false;
     }
     
     /**

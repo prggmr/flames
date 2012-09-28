@@ -1,5 +1,5 @@
 <?php
-namespace flames\query;
+namespace flames\query\results;
 /**
  * Copyright 2010-12 Nickolas Whiting. All rights reserved.
  * Use of this source code is governed by the Apache 2 license
@@ -13,7 +13,7 @@ namespace flames\query;
  * Bundles the results from a SELECT query to allow for iteration and simple
  * retrieval of query results.
  */
-class Results_Wrapper implements \Iterator {
+class Wrapper implements \Iterator {
 
     use \prggmr\Storage;
 

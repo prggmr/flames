@@ -7,31 +7,28 @@ namespace flames\listener;
  */
 
 /**
- * Listening handle used for running SELECT statements
+ * Listening handle used for running DELETE statements
  */
-class Select extends \flames\Listener 
+class Delete extends \flames\Listener 
 {
     /**
      * Exhaust of the on select
      */
-    protected $_on_select_exhaust = 0;
+    protected $_on_delete_exhaust = 0;
 
     /**
      * Priority of the on select
      */
-    protected $_on_select_priority = 10;
+    protected $_on_delete_priority = 10;
 
     /**
      * Performs an SQL SELECT query.
      *
      * @return  boolean
      */
-    public function on_select(\flames\query\event\Select $event)
+    public function on_delete(\flames\query\event\Delete $event)
     {
         $this->exec_query($event);
-        $event->set_result(new \flames\query\results\Wrapper(
-            $event->get_statement()->fetchAll(\PDO::FETCH_ASSOC),
-            $event->get_query()->get_model()
-        ));
+        return true;
     }
 }

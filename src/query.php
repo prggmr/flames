@@ -1,5 +1,5 @@
 <?php
-namespace flames\query;
+namespace flames;
 /**
  * Copyright 2010-12 Nickolas Whiting. All rights reserved.
  * Use of this source code is governed by the Apache 2 license
@@ -12,7 +12,7 @@ namespace flames\query;
  *
  * This allows for building and executing SQL statements.
  */
-class Base {
+class Query {
 
     /**
      * Fields to use in the query.
@@ -60,10 +60,14 @@ class Base {
     public function exec($return_event = false)
     {
         $name = array_pop(explode('\\', get_class($this)));
-        $event = '\\flames\\events\\'.$name;
+        $event = '\\flames\\query\\event\\'.$name;
         $model = '\\flames\\signal\\model\\'.$name;
         $signal = '\\flames\\signal\\'.$name;
-        $event = new $event($this, $this->build_query());
+        $query = $this->build_query();
+        if (false === $query) {
+            return false;
+        }
+        $event = new $event($this, $query);
         $model_signal = \prggmr\signal(
             new $model($this->get_model()),
             $event

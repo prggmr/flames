@@ -33,7 +33,7 @@ class Ilike extends Base {
      *
      * @return  string
      */
-    public function get_value(/* ... */)
+    public function get_bind_value(/* ... */)
     {
         return '%'.$this->_value.'%';
     }

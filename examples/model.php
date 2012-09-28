@@ -15,7 +15,7 @@ class Model extends flames\Model {
     public function __init()
     {
         // enable transactions
-        $this->get_connection()->set_transactions(true);
+        // $this->get_connection()->set_transactions(true);
     }
 
 }
@@ -25,7 +25,7 @@ class User extends Model {
     public $username = ['char', ['default' => 1, 'max_length' => 30]];
     public $password = ['datetime'];
     public $email = ['text'];
-    public $another = ['boolean'];
+    public $another = ['boolean', ['default' => 1]];
     
     /**
      * To string

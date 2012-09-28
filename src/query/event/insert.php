@@ -1,5 +1,5 @@
 <?php
-namespace flames\events;
+namespace flames\query\event;
 /**
  * Copyright 2010-12 Nickolas Whiting. All rights reserved.
  * Use of this source code is governed by the Apache 2 license
@@ -7,6 +7,6 @@ namespace flames\events;
  */
 
 /**
- * Event used for SELECT signals.
+ * Event used for INSERT signals.
  */
-class Select extends Event {}
+class Insert extends \flames\query\Event {}

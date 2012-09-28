@@ -16,5 +16,5 @@ interface Value {
      *
      * @return  string
      */
-    public function get_value(/* ... */);
+    public function get_bind_value(/* ... */);
 }

@@ -1,5 +1,5 @@
 <?php
-namespace flames\events;
+namespace flames\query\event;
 /**
  * Copyright 2010-12 Nickolas Whiting. All rights reserved.
  * Use of this source code is governed by the Apache 2 license
@@ -7,6 +7,6 @@ namespace flames\events;
  */
 
 /**
- * Event used for DELETE signals.
+ * Event used for SELECT signals.
  */
-class Delete extends Event {}
+class Select extends \flames\query\Event {}

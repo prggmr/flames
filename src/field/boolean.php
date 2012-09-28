@@ -37,4 +37,14 @@ class Boolean extends \flames\Field {
     {
         $this->__value = (true == $val);
     }
+
+    /**
+     * Gets the current value converted for the database.
+     *
+     * @return  mixed
+     */
+    public function get_bind_value(/* ... */)
+    {
+        return ($this->__value) ? 1 : 0;
+    }
 }

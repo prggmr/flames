@@ -33,4 +33,26 @@ class Datetime extends \flames\Field {
             $default
         );
     }
+
+    /**
+     * Sets the current value.
+     *
+     * @param  mixed  $val  Value to set the field.
+     *
+     * @return  object  this
+     */
+    public function set_value($val)
+    {
+        $this->__value = strtotime($val);
+    }
+
+    /**
+     * Gets the current value converted for the database.
+     *
+     * @return  mixed
+     */
+    public function get_db_value(/* ... */)
+    {
+        return \flames\mysql_datetime($this->__value);
+    }
 }
