@@ -6,7 +6,7 @@
  */
 
 // library version
-define('FLAMES_VERSION', '1.0.0-RC1');
+define('FLAMES_VERSION', '1.0.0-RC2');
 
 // The creator
 define('FLAMES_MASTERMIND', 'Nickolas Whiting');
