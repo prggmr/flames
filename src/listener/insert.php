@@ -30,8 +30,7 @@ class Insert extends \flames\Listener
     {
         $this->exec_query($event);
         $model = $event->get_query()->get_model();
-        $insertid = $model->get_connection()->lastInsertId();
-        $model->get_primary_key()->set_value($insertid);
-        return $insertid;
+        $model->get_primary_key()->set_value($event->insert_id);
+        return $event->insert_id;
     }
 }

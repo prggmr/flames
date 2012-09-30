@@ -154,8 +154,7 @@ class Field implements query\bind\Value {
      */
     public function get_db_field()
     {
-        $default = (null === $this->_default) ? 'DEFAULT NULL' : 
-            ($this->_default == '') ? 'NOT NULL' : 'DEFAULT '.$this->_default;
+        $default = (null === $this->_default) ? 'DEFAULT NULL' : 'DEFAULT '.$this->_default;
         return sprintf($this->_template,
             $this->_name,
             $this->_type, 

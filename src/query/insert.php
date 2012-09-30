@@ -37,7 +37,6 @@ class Insert extends \flames\Query {
             if ($_field instanceof \flames\field\ForeignKey) {
                 $fk = $_field->get_value(false);
                 if (is_object($fk)) {
-                    var_dump($fk);
                     $fk->save()->exec();
                 }
             }

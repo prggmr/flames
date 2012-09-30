@@ -49,7 +49,7 @@ class Foreignkey extends \flames\field\Integer {
                 $to
             ));
         }
-        $this->_to = new $to;
+        $this->_to = $to;
         return parent::set_attributes($options);
     }
 
@@ -84,11 +84,6 @@ class Foreignkey extends \flames\field\Integer {
     public function set_value($val)
     {
         $this->__value = $val;
-        if (is_object($val) && $val instanceof \flames\Model) {
-            $this->_key = $val;
-        } else {
-            $this->_key = $val;
-        }
     }
 
     /**
