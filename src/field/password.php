@@ -7,37 +7,14 @@ namespace flames\field;
  */
 
 /**
- * Datetime Field
+ * Password Field
  */
-class Datetime extends \flames\Field {
+class Password extends Char {
 
     /**
-     * Field create template
+     * Hash function to use when storing and comparing DB.
      */
-    protected $_template = '`%s` datetime %s';
-
-    /**
-     * Default value for current time
-     */
-    const CURRENT_TIMESTAMP = 1;
-
-    /**
-     * Default
-     */
-
-    /**
-     * Returns the field creation string.
-     *
-     * @return  string
-     */
-    public function get_db_field()
-    {
-        $default = ($this->_default == null) ? 'DEFAULT NULL' : 'NOT NULL';
-        return sprintf($this->_template,
-            $this->_name,
-            $default
-        );
-    }
+    protected $_hash = 'sha1';
 
     /**
      * Sets the current value.
@@ -48,7 +25,8 @@ class Datetime extends \flames\Field {
      */
     public function set_value($val)
     {
-        $this->__value = strtotime($val);
+        $hash_func = $this->_hash;
+        $this->__value = $hash_func($val);
     }
 
     /**

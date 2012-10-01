@@ -18,12 +18,13 @@ require_once 'model.php';
 // /**
 //  * Foreign key fields automatically save!
 //  */
-// $profile = new Profile();
-// $profile->first_name = "Nick";
-// $profile->last_name = "Whiting";
-// $profile->user->email = "prggmr@gmail.com";
-// $profile->user->username = "prggmr";
-// $profile->save()->exec();
+$profile = new Profile();
+$profile->first_name = "Nick";
+$profile->last_name = "Whiting";
+$profile->user->email = "prggmr@gmail.com";
+$profile->user->username = "prggmr";
+$profile->save()->exec();
+vaR_dump($profile);
 
 /**
  * Now lets select that profile we just saved
@@ -41,6 +42,6 @@ require_once 'model.php';
 // $profile->delete()->exec();
 // var_dump($profile);
 
-$profile = new Credit();
-$profile->card_number = '527893459823749587234958';
-$profile->save()->exec();
+// $profile = new Credit();
+// $profile->card_number = '527893459823749587234958';
+// $profile->save()->exec();

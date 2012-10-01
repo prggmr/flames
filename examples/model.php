@@ -15,7 +15,7 @@ class Model extends flames\Model {
     public function __init()
     {
         // enable transactions
-        $this->get_connection()->set_transactions(true);
+        //$this->get_connection()->set_transactions(true);
     }
 
 }
@@ -44,5 +44,5 @@ class Profile extends Model {
 }
 
 class Credit extends Model {
-    public $card_number = ['aes_encrypt', ['key' => 'LJFH34798VY079CG2GHTF78TXC02T7Y0CY8']];
+    public $card_number = ['aes_encrypt', ['key' => 'asdfsadf']];
 }

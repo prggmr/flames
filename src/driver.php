@@ -62,15 +62,16 @@ abstract class Driver extends \PDO {
     }
 
     /**
-     * Executes a PDO Statement.
+     * Executes a query event.
      *
      * @param  object  $statement \PDOStatement
-     * @param  object  $query  \flames\Query
      * 
-     * @return
+     * @return void
      */
-    public function exec_statement(\PDOStatement $statement, Query $query)
+    public function exec_event_query(query\Event $event)
     {
+        $query = $event->get_query();
+        $statement = $event->get_statement();
         $query->bind($statement);
         $transactions = $this->use_transactions();
         if ($transactions) {
@@ -82,25 +83,12 @@ abstract class Driver extends \PDO {
             if ($transactions) {
                 $this->rollback();
             }
-            throw new \flames\Exception($e->getMessage());
+            throw new \flames\Exception($e);
         }
+        $event->insert_id = $this->lastInsertId();
         if ($transactions) {
             $this->commit();
         }
-    }
-
-    /**
-     * Throws an exception based on the error provided in the errorInfo.
-     *
-     * @return  void
-     */
-    public function throw_db_exception(/* ... */)
-    {
-        $error = $this->errorInfo();
-        throw new \flames\Exception(sprintf(
-            '(%s) %s',
-            $error[1], $error[2]
-        ));
     }
 
     /**
@@ -123,7 +111,7 @@ abstract class Driver extends \PDO {
     public function set_transactions($flag)
     {
         if (true === $flag || false === $flag) {
-            $this->_transaction = $flag;
+            $this->_transactions = $flag;
             return;
         }
         throw new \InvalidArgumentException();
@@ -136,6 +124,6 @@ abstract class Driver extends \PDO {
      */
     public function use_transactions(/* ... */)
     {
-        return $this->_transaction;
+        return $this->_transactions;
     }
 }

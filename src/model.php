@@ -376,6 +376,20 @@ class Model {
     {
         $this->_dirty = false;
     }
+
+    /**
+     * Static method for finding results.
+     *
+     * @param  array  $where  Where search lookup.
+     *
+     * @return  \flames\query\results\Wrapper
+     */
+    public static function find($where = null)
+    {
+        $model = get_called_class();
+        $model = new $model();
+        return $model->select()->where($where)->exec();
+    }
     
     /**
      * Returns the connection instance

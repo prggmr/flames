@@ -49,7 +49,7 @@ class Foreignkey extends \flames\field\Integer {
                 $to
             ));
         }
-        $this->_to = new $to;
+        $this->_to = $to;
         return parent::set_attributes($options);
     }
 
@@ -60,17 +60,19 @@ class Foreignkey extends \flames\field\Integer {
      */
     public function get_db_keys(/* ... */)
     {
+        $foreign = $this->_to;
+        $foreign = new $foreign();
         return sprintf(
             'CONSTRAINT `%s` FOREIGN KEY (`%s`) REFERENCES `%s` (`%s`)',
             sprintf(
                 '%s_%s_%s',
                 $this->_name,
-                $this->_to->get_table(),
-                $this->_to->get_primary_key()->get_name()
+                $foreign->get_table(),
+                $foreign->get_primary_key()->get_name()
             ),
             $this->_name,
-            $this->_to->get_table(),
-            $this->_to->get_primary_key()->get_name()
+            $foreign->get_table(),
+            $foreign->get_primary_key()->get_name()
         );
     }
 
@@ -84,11 +86,6 @@ class Foreignkey extends \flames\field\Integer {
     public function set_value($val)
     {
         $this->__value = $val;
-        if (is_object($val) && $val instanceof \flames\Model) {
-            $this->_key = $val;
-        } else {
-            $this->_key = $val;
-        }
     }
 
     /**

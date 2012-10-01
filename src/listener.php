@@ -50,11 +50,8 @@ class Listener extends \prggmr\Listener
      */
     public function exec_query(query\Event $event)
     {
-        $statement = $event->get_statement();
-        $query = $event->get_query();
-        return $event->get_query()->get_model()->get_connection()->exec_statement(
-            $statement,
-            $query
+        return $event->get_query()->get_model()->get_connection()->exec_event_query(
+            $event
         );
     }
 }
