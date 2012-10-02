@@ -46,7 +46,7 @@ class Wrapper implements \Iterator, \ArrayAccess {
      */
     public function first(/* ... */)
     {
-        return $this->_make_model($this->_storage[0]);
+        return $this->_make_model($this->offsetGet(0));
     }
 
     /**
@@ -56,7 +56,7 @@ class Wrapper implements \Iterator, \ArrayAccess {
      */
     public function last(/* ... */)
     {
-        return $this->_make_model($this->_storage[$this->count() - 1]);
+        return $this->_make_model($this->offsetGet($this->count() - 1));
     }
 
     /**
@@ -150,12 +150,51 @@ class Wrapper implements \Iterator, \ArrayAccess {
         return $this->reset();
     }
 
-    public function offsetGet($offset) {
-        return $this->_make_model($this->_storage[$offset]);
+    /**
+     * Returns the model at the given index.
+     * 
+     * @param  integer  $offset  Index offset
+     * 
+     * @return  object|boolean  Model, False if invalid index
+     */
+    public function offsetGet($offset) 
+    {
+        if ($this->offsetExists($offset)) {
+            return $this->_make_model($this->_storage[$offset]);
+        }
+        return false;
     }
-    public function offsetSet($offset, $value){}
-    public function offsetUnset($offset){}
-    public function offsetExists($offset){}
+
+    /**
+     * Disallow change.
+     * 
+     * @return  void
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new \LogicException("Wrapper results cannot be modified");
+    }
+
+    /**
+     * Remove a result.
+     * 
+     * @param  integer  $offset  Index offset
+     * 
+     * @return  boolean
+     */
+    public function offsetUnset($offset)
+    {
+        if ($this->offsetExists($offset)) {
+            unset($this->_storage[$offset]);
+            return true;
+        }
+        return false;
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->_storage[$offset]);
+    }
     /**
      * Maps a result to a model object.
      *

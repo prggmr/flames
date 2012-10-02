@@ -14,7 +14,7 @@ class Binary extends \flames\Field {
     /**
      * Field type
      */
-    protected $_type = 'binary';
+    protected $_type = 'varbinary';
 
     /**
      * Max length
@@ -24,15 +24,5 @@ class Binary extends \flames\Field {
     /**
      * Default value
      */
-    protected $_default = '';
-
-    /**
-     * Returns a SQL wrapper function to use for insert/update for a field.
-     *
-     * @return  string
-     */
-    public function get_save_function($bind)
-    {
-        return false;
-    }
+    protected $_default = null;
 }
