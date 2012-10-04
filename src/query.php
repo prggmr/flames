@@ -22,9 +22,9 @@ class Query {
     protected $_fields = [];
 
     /**
-     * Models used within the query.
+     * Models the query belongs to.
      */
-    protected $_models = [];
+    protected $_model = null;
 
     /**
      * Constructs a new query.
@@ -36,7 +36,7 @@ class Query {
     public function __construct($fields = null, $model = null) 
     {
         $this->_fields = $fields;
-        $this->_models[] = $model;
+        $this->_model = $model;
     }
 
     /**
@@ -46,11 +46,11 @@ class Query {
      */
     public function get_model(/* ... */)
     {
-        return $this->_models[0];
+        return $this->_model;
     }
 
     /**
-     * Executes the query.php
+     * Executes the query
      *
      * @param  boolean  $return_event  Return the event rather than a Result 
      *                                 object.

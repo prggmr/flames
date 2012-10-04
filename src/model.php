@@ -21,6 +21,13 @@ class Model {
     protected $_fields = [];
 
     /**
+     * Field aliases.
+     *
+     * @var  array
+     */
+    protected $_aliases = [];
+
+    /**
      * Is this model dirty?
      *
      * @var  boolean
@@ -41,7 +48,7 @@ class Model {
      */
     protected $_ignore = [
         '_ignore', '_connection', '_dirty', '_fields', '_table', '_engine',
-        '_charset', '_primary'
+        '_charset', '_primary', '_aliases'
     ];
 
     /**
@@ -115,6 +122,9 @@ class Model {
             $attributes['name'] = $_name;
             $field->set_attributes($attributes);
             $this->_fields[$_name] = $field;
+            if ($field->get_name() !== $field->get_db_field_name()) {
+                $this->_aliases[$field->get_db_field_name()] = $field->get_name();
+            }
             unset($this->$_name);
         }
         // Do we have a name
@@ -150,7 +160,7 @@ class Model {
             $this->_fields = $tmp + $this->_fields;
             $this->_primary = $primary;
         }
-        if (count($values) != 0) {
+        if (is_array($values) && count($values) != 0) {
             foreach ($values as $_key => $_value) {
                 $this->{$_key} = $_value;
             }
@@ -187,10 +197,13 @@ class Model {
     final public function __set($prop, $val)
     {
         if (!isset($this->_fields[$prop])) {
-            throw new \RuntimeException(sprintf(
-                "Model %s has no field %s",
-                get_class($this), $prop
-            ));
+            if (!isset($this->_aliases[$prop])) {
+                throw new \RuntimeException(sprintf(
+                    "Model %s has no field %s",
+                    get_class($this), $prop
+                ));
+            }
+            $prop = $this->_aliases[$prop];
         }
         $this->_dirty = true;
         $this->_fields[$prop]->set_value($val);
@@ -207,10 +220,13 @@ class Model {
     final public function __get($prop)
     {
         if (!isset($this->_fields[$prop])) {
-            throw new \RuntimeException(sprintf(
-                "Model %s has no field %s",
-                get_class($this), $prop
-            ));
+            if (!isset($this->_aliases[$prop])) {
+                throw new \RuntimeException(sprintf(
+                    "Model %s has no field %s",
+                    get_class($this), $prop
+                ));
+            }
+            $prop = $this->_aliases[$prop];
         }
         return $this->_fields[$prop]->get_value();
     }
@@ -256,6 +272,24 @@ class Model {
     public function get_table(/* ... */)
     {
         return $this->_table;
+    }
+
+    /**
+     * Returns a specific field in the model.
+     *
+     * @param  string  $field  Field name
+     *
+     * @return  object
+     */
+    public function get_field($field)
+    {
+        if (!isset($this->_fields[$field])) {
+            throw new \RuntimeException(sprintf(
+                "Model %s has no field %s",
+                get_class($this), $field
+            ));
+        }
+        return $this->_fields[$field];
     }
 
     /**

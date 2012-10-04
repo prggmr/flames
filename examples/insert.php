@@ -24,15 +24,15 @@ $profile->last_name = "Whiting";
 $profile->user->email = "prggmr@gmail.com";
 $profile->user->username = "prggmr";
 $profile->save()->exec();
-vaR_dump($profile);
+// vaR_dump($profile);
 
 /**
  * Now lets select that profile we just saved
  */
-// $profile = new Profile();
-// $profile = $profile->select()->where(['first_name' => 'Nick'])->exec()->first();
-// echo $profile->first_name.PHP_EOL;
-// echo $profile->user->email.PHP_EOL;
+$profile = new Profile();
+$profile = $profile->select()->where(['first_name' => 'Nick'])->exec()->first();
+var_dump($profile);
+echo $profile->user->username.PHP_EOL;
 
 // /**
 //  * Now Update

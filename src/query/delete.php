@@ -26,7 +26,7 @@ class Delete extends \flames\Query {
         $model = $this->get_model();
         // Add the primary key for the where
         $primary = $model->get_primary_key();
-        $primary_name = $primary->get_name();
+        $primary_name = $primary->get_db_field_name();
         $primary_val = $primary->get_value();
         if (null === $primary_val) return false;
         $query = ["DELETE FROM"];

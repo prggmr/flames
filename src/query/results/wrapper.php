@@ -46,7 +46,7 @@ class Wrapper implements \Iterator, \ArrayAccess {
      */
     public function first(/* ... */)
     {
-        return $this->_make_model($this->offsetGet(0));
+        return $this->offsetGet(0);
     }
 
     /**
@@ -56,7 +56,7 @@ class Wrapper implements \Iterator, \ArrayAccess {
      */
     public function last(/* ... */)
     {
-        return $this->_make_model($this->offsetGet($this->count() - 1));
+        return $this->offsetGet($this->count() - 1);
     }
 
     /**

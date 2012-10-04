@@ -49,6 +49,14 @@ class Foreignkey extends \flames\field\Integer {
                 $to
             ));
         }
+        if (!isset($options['field'])) {
+            if(stripos('_id', $options['name']) === false) {
+                $field = sprintf('%s_id', $options['name']);
+            } else {
+                $field = $options['name'];
+            }
+            $options['field'] = $field;
+        }
         $this->_to = $to;
         return parent::set_attributes($options);
     }
@@ -66,13 +74,13 @@ class Foreignkey extends \flames\field\Integer {
             'CONSTRAINT `%s` FOREIGN KEY (`%s`) REFERENCES `%s` (`%s`)',
             sprintf(
                 '%s_%s_%s',
-                $this->_name,
+                $this->_field,
                 $foreign->get_table(),
-                $foreign->get_primary_key()->get_name()
+                $foreign->get_primary_key()->get_db_field_name()
             ),
-            $this->_name,
+            $this->_field,
             $foreign->get_table(),
-            $foreign->get_primary_key()->get_name()
+            $foreign->get_primary_key()->get_db_field_name()
         );
     }
 

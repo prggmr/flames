@@ -32,7 +32,7 @@ class User extends Model {
      */
     public function __toString()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->username . ' [ ' . $this->email . ' ] ';
     }
 }
 

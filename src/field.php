@@ -27,6 +27,11 @@ class Field implements query\bind\Value {
     protected $__value = null;
 
     /**
+     * DB field name.
+     */
+    protected $_field = null;
+
+    /**
      * Field type
      */
     protected $_type = null;
@@ -73,6 +78,10 @@ class Field implements query\bind\Value {
                     ));
                 }
                 $this->{$_internal} = $_val;
+            }
+
+            if (null !== $this->_name && null === $this->_field) {
+                $this->_field = $this->_name;
             }
         }
     }
@@ -156,7 +165,7 @@ class Field implements query\bind\Value {
     {
         $default = (null === $this->_default) ? 'DEFAULT NULL' : 'DEFAULT '.$this->_default;
         return sprintf($this->_template,
-            $this->_name,
+            $this->_field,
             $this->_type, 
             $this->_max_length, 
             $default
@@ -193,5 +202,15 @@ class Field implements query\bind\Value {
     public function get_name(/* ... */)
     {
         return $this->_name;
+    }
+
+    /**
+     * Returns the db field name
+     *
+     * @return  string
+     */
+    public function get_db_field_name(/* ... */)
+    {
+        return $this->_field;
     }
 }

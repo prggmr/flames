@@ -22,10 +22,6 @@ trait Where {
     protected $_where = null;
 
     /**
-     * Values to bind
-     */
-
-    /**
      * Provides a where lookup based on the given array for the SQL query.
      *
      * @param  array  $params
@@ -46,9 +42,11 @@ trait Where {
     /**
      * Returns the where query.
      *
+     * @param  object  $model  Model object for the where
+     *
      * @return  string
      */
-    public function build_where(/* ... */)
+    public function build_where()
     {
         if (count($this->_where) == 0) return null;
         $query = [];
@@ -186,7 +184,7 @@ trait Where {
             $field = array_shift($array);
             $lookup = array_shift($array);
         }
-
+        $field = $this->_model->get_field($field)->get_db_field_name();
         $name = sprintf(
             '\\flames\\query\\lookup\\%s',
             ucfirst($lookup)

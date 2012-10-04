@@ -42,7 +42,7 @@ class Update extends \flames\Query {
                     $fk->save()->exec();
                 }
             }
-            $name = $_field->get_name();
+            $name = $_field->get_db_field_name();
             $value = $_field;
             $bind = $this->to_bind_var($name);
             $this->_bind($name, $value);
