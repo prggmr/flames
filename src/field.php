@@ -47,6 +47,11 @@ class Field implements query\bind\Value {
     protected $_name = null;
 
     /**
+     * Returns if the field is dirty.
+     */
+    protected $_dirty = false;
+
+    /**
      * Construct a field object.
      */
     public function __construct(/* ... */){}
@@ -118,10 +123,11 @@ class Field implements query\bind\Value {
      * Sets the current value.
      *
      * @param  mixed  $val  Value to set the field.
+     * @param  boolean  $db  If the value is coming directly from the DB
      *
      * @return  object  this
      */
-    public function set_value($val)
+    public function set_value($val, $db = false)
     {
         $this->__value = $val;
     }
@@ -212,5 +218,25 @@ class Field implements query\bind\Value {
     public function get_db_field_name(/* ... */)
     {
         return $this->_field;
+    }
+
+    /**
+     * Sets the field as dirty.
+     *
+     * @return  void
+     */
+    public function mark_dirty()
+    {
+        $this->_dirty = true;
+    }
+
+    /**
+     * Returns if the field is dirty and needs to update.
+     *
+     * @return  void
+     */
+    public function is_dirty()
+    {
+        return $this->_dirty;
     }
 }

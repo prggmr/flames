@@ -204,6 +204,6 @@ class Wrapper implements \Iterator, \ArrayAccess {
      */
     protected function _make_model($array)
     {
-        return new $this->_model($array);
+        return new $this->_model($array,  true);
     }
 }

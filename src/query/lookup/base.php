@@ -12,14 +12,7 @@ namespace flames\query\lookup;
  *
  * This allows for building where lookup statements.
  */
-class Base implements \flames\query\bind\Value {
-
-    /**
-     * Value to be returned
-     *
-     * @var  array
-     */
-    protected $_value = null;
+class Base {
 
     /**
      * Field used in the lookup.
@@ -44,11 +37,10 @@ class Base implements \flames\query\bind\Value {
      *
      * @return  void
      */
-    public function __construct($field, $key = null, $value = null)
+    public function __construct($field, $key = null)
     {
         $this->_field = $field;
         $this->_key = $key;
-        $this->_value = $value;
     }
 
     /**
@@ -59,15 +51,5 @@ class Base implements \flames\query\bind\Value {
     public function get_lookup(/* ... */)
     {
         throw new \RuntimeException('Method not implemented');
-    }
-
-    /**
-     * Returns the value
-     *
-     * @return  string
-     */
-    public function get_bind_value(/* ... */)
-    {
-        return $this->_value;
     }
 }

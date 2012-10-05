@@ -79,10 +79,11 @@ class Model {
      * If a constructor is need in a child use __init instead.
      *
      * @param  array  $values  Default values for the model properties
+     * @param  boolean  $set  Tells the field objects to ignore any set functions.
      *
      * @return  object  Model
      */
-    final public function __construct($values = []) 
+    final public function __construct($values = [], $set = false) 
     {
         $properties = get_object_vars($this);
         foreach ($properties as $_name => $_property) {
@@ -162,7 +163,7 @@ class Model {
         }
         if (is_array($values) && count($values) != 0) {
             foreach ($values as $_key => $_value) {
-                $this->{$_key} = $_value;
+                $this->_fields[$_key]->set_value($_value, $set);
             }
         }
         // Model construction does not make it dirty
@@ -205,8 +206,10 @@ class Model {
             }
             $prop = $this->_aliases[$prop];
         }
+        $field = $this->_fields[$prop];
         $this->_dirty = true;
-        $this->_fields[$prop]->set_value($val);
+        $field->set_value($val);
+        $field->mark_dirty();
     }
 
     /**
@@ -382,6 +385,7 @@ class Model {
                 define('FLAMES_UPDATE_REGISTERED', true);
                 \prggmr\listen(new \flames\listener\Update());
             }
+            echo "RUNNING UPDATE";
             $query = new \flames\query\Update($this->get_fields(), $this);
         }
         return $query;

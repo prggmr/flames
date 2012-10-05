@@ -43,10 +43,11 @@ class Datetime extends \flames\Field {
      * Sets the current value.
      *
      * @param  mixed  $val  Value to set the field.
+     * @param  $db  @ignored
      *
-     * @return  object  this
+     * @return  void
      */
-    public function set_value($val)
+    public function set_value($val, $db = false)
     {
         $this->__value = strtotime($val);
     }
@@ -56,7 +57,7 @@ class Datetime extends \flames\Field {
      *
      * @return  mixed
      */
-    public function get_db_value(/* ... */)
+    public function get_bind_value(/* ... */)
     {
         if (null === $this->__value) {
             $this->__value = time();

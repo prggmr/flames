@@ -33,6 +33,7 @@ class Update extends \flames\Query {
         // Field selection
         $values = [];
         foreach ($this->_fields as $_field) {
+            if (!$_field->is_dirty()) continue;
             if ($_field instanceof \flames\field\Primary) {
                 continue;
             }
@@ -51,6 +52,9 @@ class Update extends \flames\Query {
                 sprintf('`%s`', $name),
                 $_field->get_save_function($bind)
             );
+        }
+        if (count($values) == 0) {
+            return false;
         }
         $query[] = implode(", ", $values);
         // Add the primary key for the where

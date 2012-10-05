@@ -38,10 +38,11 @@ class Primary extends \flames\field\Integer {
      * Sets the current value.
      *
      * @param  mixed  $val  Value to set the field.
+     * @param  $db  @ignored
      *
-     * @return  object  this
+     * @return  void
      */
-    public function set_value($val)
+    public function set_value($val, $db = false)
     {
         if ($val !== null) {
             $val = intval($val);

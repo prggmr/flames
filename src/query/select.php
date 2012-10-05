@@ -38,7 +38,7 @@ class Select extends \flames\Query {
         $query[] = 'FROM';
         $query[] = $model->get_table();
         // WHERE lookup
-        $query[] = $this->build_where($this->get_model());
+        $query[] = $this->build_where();
         return $model->get_connection()->prepare(implode(" ", $query));
     }
 }

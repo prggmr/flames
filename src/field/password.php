@@ -17,28 +17,25 @@ class Password extends Char {
     protected $_hash = 'sha1';
 
     /**
+     * Default length
+     */
+    protected $_max_length = 75;
+
+    /**
      * Sets the current value.
      *
      * @param  mixed  $val  Value to set the field.
+     * @param  boolean  $db  Value it coming from db and already hashed.
      *
      * @return  object  this
      */
-    public function set_value($val)
+    public function set_value($val, $db = false)
     {
-        $hash_func = $this->_hash;
-        $this->__value = $hash_func($val);
-    }
-
-    /**
-     * Gets the current value converted for the database.
-     *
-     * @return  mixed
-     */
-    public function get_db_value(/* ... */)
-    {
-        if (null === $this->__value) {
-            $this->__value = time();
+        if (!$db) {
+            $hash_func = $this->_hash;
+            $this->__value = $hash_func($val);
+        } else {
+            $this->__value = $val;
         }
-        return \flames\mysql_datetime($this->__value);
     }
 }
