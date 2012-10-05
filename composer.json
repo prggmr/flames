@@ -8,10 +8,15 @@
             "name": "Nickolas Whiting",
             "email": "prggmr@gmail.com",
             "homepage": "http://prggmr.org"
+        },
+        {
+            "name": "X Studios",
+            "email": "info@xstudiosinc.com",
+            "homepage": "http://xstudiosinc.com"
         }
     ],
     "require": {
         "php": ">=5.4.0",
-        "prggmr/prggmr": "1.2.*"
+        "prggmr/prggmr": "2.*.*"
     }
 }
