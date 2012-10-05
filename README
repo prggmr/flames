@@ -1,83 +1,164 @@
-A Django inspired ORM for PHP that doesn't suck!
+# Welcome to flames
 
-This project is still highly experimental and using it for anything you or 
-anyone else cares about is really living on the edge.
+flames is an Event Driven ORM for PHP based on Django and built 
+with [prggmr](http://prggmr.org).
 
-## Installation
+Currently flames supports only MySQL.
 
-[Composer](http://getcomposer.org)
+## Run'n Gun Install
 
+    $ curl prggmr.org/flames/flames | sh
 
-Include the following in your ```composer.json``` file.
+And
 
-    {
-        "require": {
-            "prggmr/flames": "0.*.*"
-        }
+    <?php
+
+    require_once 'flames/src/flames.php'
+
+For a manual or Windows installation see the [install](install.html) doc.
+
+## Lighting your flame
+
+This quick introduction will get you up and running!
+
+Before you begin make sure you have installed flames and have a MySQL database 
+ready to use.
+
+## Connect to the database
+
+Add a connection to flames using the ```flames\Connections::add``` method, 
+providing a valid flames driver.
+
+Here we create a ```flames\driver\MySQL``` driver just as you would a 
+PDO connection.
+
+    <?php
+    $db = new flames\driver\MySQL(
+        'mysql:dbname=DBNAME;host=localhost;port=3306', 
+        'username', 
+        'password'
+    );
+    // Tell flames about the connection, this will also set it as the default
+    flames\Connections::add($db);
+
+## Create a Model
+
+Models are created by extending the ```flames\Model``` class.
+
+Here we will create a simple User model with the fields of username and password.
+
+    <?php
+    class User extends flames\Model {
+        public $username = ['char'];
+        public $password = ['password'];
     }
 
-Run the installer.
+Note the use of the ```password``` field for later.
 
-    php composer.phar install
+You can now tell flames to create this table for you automatically by using the 
+```create_table``` method.
 
-## Intentions
+    <?php
+    $user = new User();
+    $user->create_table();
 
-Have an ORM that isn't 30,000 files and doesn't do some weird voodoo magic
-behind the scenes to make my SQL queries run.
+This results in the following SQL:
 
-## Experimental
+    CREATE TABLE `user` (
+      `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `username` varchar(225) DEFAULT NULL,
+      `password` varchar(75) DEFAULT NULL,
+      PRIMARY KEY (`user_id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-I can't say this enough ... just don't use this library unless you like to cut
-yourself and bleed!
+Notice the ```user_id```, flames will automatically add primary key columns for 
+your models if one is not detected using the model name with ```_id``` appended.
 
-## Usage
+## Insert records
 
-### Establish a connection
+Insert a new record by creating a new model object, set it's property and call 
+the ```save()``` method.
 
-```php
-<?php
-flames\Connections::add(new flames\driver\MySQL(
-    'mysql:dbname=flames;host=127.0.0.1', 
-    'root', 
-    ''
-));
-```
+    <?php
+    $user = new User();
+    $user->username = 'prggmr';
+    $user->password = 'myPa$$word';
+    $user->save()->exec();
+    // We now have an id
+    echo $user->user_id;
 
-### Model structure
+This results in the following SQL: ( broken for sanity )
 
-```php
-<?php
-class User extends flames\Model {
-    
-    public $username = ['char', ['default' => 1, 'max_length' => 30]];
-    public $password = ['datetime'];
-    public $email = ['text'];
-    public $another = ['boolean'];
-    
-    /**
-     * To string
-     */
-    public function __toString()
-    {
-        return $this->first_name . ' ' . $this->last_name;
-    }
-}
+    INSERT INTO user 
+    ( `username`, `password` ) 
+    VALUES 
+    ( "prggmr", "9353be3c53a16e869ab988db92f8ee1d3ef0287b" )
 
-// Profile with a key relationship to user
-class Profile extends Model {
+Notice the ```password``` field is hashed?
 
-    public $first_name = ['char'];
-    public $last_name = ['char'];
-    public $user = ['foreignkey', ['to' => 'User']];
-}
+flames will automatically hash this field ( by default using ```sha1``` ) when talking to the database.
 
-```
+Also note the call to ```exec``` that must be called to execute the query.
 
-### Create tables
-```php
-<?php
-$user = new User();
-$profile = new Profile();
-$user->create_table();
-$profile->create_table();
-```
+## Select records
+
+Now that we have a record in the database let's select it.
+
+    <?php
+    $user = User::find([
+        'username' => 'prggmr',
+        'password' => 'myPa$$word'
+    ])->first();
+    echo "Hello, ".$user->username;
+
+This results in the following SQL: ( broken for sanity )
+
+    SELECT `user_id`, `username`, `password` 
+    FROM user 
+    WHERE 
+    `username` = "prggmr" 
+    AND 
+    `password` = "9353be3c53a16e869ab988db92f8ee1d3ef0287b"
+
+Notice the automatically hashed password?
+
+The return is a ```flames\query\results\Wrapper``` we chained the result selecting the first 
+record using the ```first()``` method, you can also ```count()```, use ```foreach``` 
+iteration and use direct array indexing ```$record[0]``` on a ```Wrapper```.
+
+## Update Records
+
+Updating records is performed simply by calling the ```save()``` method on a found 
+model result.
+
+    <?php
+    $user = User::find([
+        'username' => 'prggmr',
+        'password' => 'myPa$$word'
+    ])->first();
+    // Set their username to "pigface"
+    $user->username = "pigface";
+    $user->save()->exec();
+
+This results in the following SQL:
+
+    UPDATE user SET `username` = "prggmr" WHERE `user_id` = 1
+
+Notice we only updated the ```user``` field, flames will only update fields 
+that have changed since retrieval.
+
+## Delete Records
+
+Deleting a record is identical to that of updating only you call the ```delete()``` 
+method on the found result.
+
+    <?php
+    $user = User::find([
+        'username' => 'prggmr',
+        'password' => 'myPa$$word'
+    ])->first();
+    $user->delete()->exec();
+
+This results in the following SQL:
+
+    DELETE FROM user WHERE `user_id` = 1
