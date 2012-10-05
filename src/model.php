@@ -385,7 +385,6 @@ class Model {
                 define('FLAMES_UPDATE_REGISTERED', true);
                 \prggmr\listen(new \flames\listener\Update());
             }
-            echo "RUNNING UPDATE";
             $query = new \flames\query\Update($this->get_fields(), $this);
         }
         return $query;
