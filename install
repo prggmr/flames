@@ -1,0 +1,48 @@
+#!/bin/bash
+########################
+# Installs flames to the php include path
+########################
+VERSION=$(php -r "if (version_compare(PHP_VERSION, '5.4.0') >= 0) { echo '1'; } else { echo '0'; }")
+if [ $VERSION != '1' ];
+then
+    echo "flames requires at least PHP 5.4"
+    echo "Found"
+    which php
+    php -v
+    exit;
+fi;
+PHPPATH=$(php -r "echo get_include_path();") 
+INSTALLPATH=""
+BINPATH="/usr/bin"
+if [ ! -f "$BINPATH/prggmr" ]; 
+then
+    echo "installing prggmr"
+    curl prggmr.org/prggmr | sh
+fi;
+for x in $(echo $PHPPATH | tr ":" "\n")
+do
+    if [ "$x" != "." ]; then
+        INSTALL_PATH="$x"
+        break
+    fi
+done
+if [ $INSTALL_PATH = "" ]; 
+then
+    echo "Could not find your PHP include path";
+    exit;
+fi;
+echo "Installing flames to $INSTALL_PATH/flames"
+if [ ! -d "$INSTALL_PATH/flames" ];
+then
+    mkdir $INSTALL_PATH/flames
+fi;
+cp -Rf * "$INSTALL_PATH/flames"
+echo "flames has been installed to your PHP path"
+echo ""
+echo "To use simply add the following to your app"
+echo 'require_once "flames/src/flames.php";'
+echo ""
+echo "Have fun with flames"
+echo "Report bugs to https://github.com/xstudios/flames/issues"
+echo "====================================="
+
