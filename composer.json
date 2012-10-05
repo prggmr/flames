@@ -1,6 +1,6 @@
 {
-    "name": "prggmr/flames",
-    "description": "A Django inspired ORM for PHP that doesn't suck!",
+    "name": "xstudios/flames",
+    "description": "Event Driven ORM for PHP based on Django and built with prggmr",
     "keywords": ["orm", "signals", "django"],
     "license": "Apache 2.0",
     "authors": [
