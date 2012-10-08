@@ -119,8 +119,8 @@ class Query {
         $fields = [];
         foreach ($field as $_field) {
             try {
-                $field = $this->get_model()->get_field($_field);
-                $fields[] = $field->get_db_field_name();
+                $_field = $this->get_model()->get_field($_field);
+                $fields[] = $_field->get_db_field_name();
             } catch (\Exception $e) {
                 // Non field name such as RAND()
                 $fields[] = $_field;
