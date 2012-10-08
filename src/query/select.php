@@ -39,6 +39,12 @@ class Select extends \flames\Query {
         $query[] = $model->get_table();
         // WHERE lookup
         $query[] = $this->build_where();
+        if (null !== $this->_orderby) {
+            $query[] = $this->_orderby;
+        }
+        if (null !== $this->_limit) {
+            $query[] = $this->_limit;
+        }
         return $model->get_connection()->prepare(implode(" ", $query));
     }
 }
