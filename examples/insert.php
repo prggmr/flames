@@ -15,6 +15,12 @@ require_once 'model.php';
 // $model->username = 'nwhiting';
 // $model->save()->exec();
 
+prggmr\before(new \flames\signal\Select(), function(){
+    var_dump($this->get_statement());
+    var_dump($this->get_query()->get_bind());
+});
+
+
 prggmr\before(new \flames\signal\model\Update(new User()), function(){
     echo "RUNNING THIS";
     // var_dump($this);
@@ -28,25 +34,25 @@ prggmr\before(new \flames\signal\model\Update(new User()), function(){
 // $user->save()->exec();
 
 $result = User::find([
-    'username' => 'pigface',
-    'password' => 'myPa$$word'
-])->first();
-// var_dump($result);
-echo $result->username;
-$result->username = "pigface";
-$result->save()->exec();
+    'username__like' => 'pigface',
+    '&password' => 'myPa$$word'
+])->limit(0,1)->order_by('RAND()')->exec()->first();
+if (false !== $result) {
+    $result->username = "pigface";
+    $result->save()->exec();
+}
 
 
 // /**
 //  * Foreign key fields automatically save!
 //  */
-// $profile = new Profile();
-// $profile->first_name = "Nick";
-// $profile->last_name = "Whiting";
-// $profile->user->email = "prggmr@gmail.com";
-// $profile->user->username = "prggmr";
-// $profile->user->password = 'myPa$$word';
-// $profile->save()->exec();
+$profile = new Profile();
+$profile->first_name = "Nick";
+$profile->last_name = "Whiting";
+$profile->user->email = "prggmr@gmail.com";
+$profile->user->username = "prggmr";
+$profile->user->password = 'myPa$$word';
+$profile->save()->exec();
 // vaR_dump($profile);
 
 /**
