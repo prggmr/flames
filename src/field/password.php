@@ -17,6 +17,11 @@ class Password extends Char {
     protected $_hash = 'sha1';
 
     /**
+     * Password salt.
+     */
+    protected $_salt = '';
+
+    /**
      * Default length
      */
     protected $_max_length = 75;
@@ -33,7 +38,7 @@ class Password extends Char {
     {
         if (!$db) {
             $hash_func = $this->_hash;
-            $this->__value = $hash_func($val);
+            $this->__value = $hash_func($this->_salt . $val . $this->_salt);
         } else {
             $this->__value = $val;
         }

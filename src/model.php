@@ -8,10 +8,8 @@ namespace flames;
 
 /**
  * The model
- *
- * It does stuff to what I'm unsure!
  */
-class Model {
+class Model implements query\bind\Value {
 
     /**
      * Fields in this model.
@@ -163,7 +161,8 @@ class Model {
         }
         if (is_array($values) && count($values) != 0) {
             foreach ($values as $_key => $_value) {
-                $this->_fields[$_key]->set_value($_value, $set);
+                // This must be made to the get_field to allow for aliases
+                $this->get_field($_key)->set_value($_value, $set);
             }
         }
         // Model construction does not make it dirty
@@ -195,18 +194,18 @@ class Model {
      *
      * @return  void
      */
-    final public function __set($prop, $val)
+    final public function __set($field, $val)
     {
-        if (!isset($this->_fields[$prop])) {
-            if (!isset($this->_aliases[$prop])) {
+        if (!isset($this->_fields[$field])) {
+            if (!isset($this->_aliases[$field])) {
                 throw new \RuntimeException(sprintf(
                     "Model %s has no field %s",
-                    get_class($this), $prop
+                    get_class($this), $field
                 ));
             }
-            $prop = $this->_aliases[$prop];
+            $field = $this->_aliases[$field];
         }
-        $field = $this->_fields[$prop];
+        $field = $this->_fields[$field];
         $this->_dirty = true;
         $field->set_value($val);
         $field->mark_dirty();
@@ -215,23 +214,23 @@ class Model {
     /**
      * Gets a model property.
      *
-     * @param  string  $prop  Property to set.
+     * @param  string  $field  Property to set.
      * @param  mixed  $val  Value to set the property.
      *
      * @return  void
      */
-    final public function __get($prop)
+    final public function __get($field)
     {
-        if (!isset($this->_fields[$prop])) {
-            if (!isset($this->_aliases[$prop])) {
+        if (!isset($this->_fields[$field])) {
+            if (!isset($this->_aliases[$field])) {
                 throw new \RuntimeException(sprintf(
                     "Model %s has no field %s",
-                    get_class($this), $prop
+                    get_class($this), $field
                 ));
             }
-            $prop = $this->_aliases[$prop];
+            $field = $this->_aliases[$field];
         }
-        return $this->_fields[$prop]->get_value();
+        return $this->_fields[$field]->get_value();
     }
 
     /**
@@ -287,10 +286,13 @@ class Model {
     public function get_field($field)
     {
         if (!isset($this->_fields[$field])) {
-            throw new \RuntimeException(sprintf(
-                "Model %s has no field %s",
-                get_class($this), $field
-            ));
+            if (!isset($this->_aliases[$field])) {
+                throw new \RuntimeException(sprintf(
+                    "Model %s has no field %s",
+                    get_class($this), $field
+                ));
+            }
+            $field = $this->_aliases[$field];
         }
         return $this->_fields[$field];
     }
@@ -425,7 +427,7 @@ class Model {
     {
         $model = get_called_class();
         $model = new $model();
-        return $model->select()->where($where)->exec();
+        return $model->select()->where($where);
     }
     
     /**
@@ -436,5 +438,15 @@ class Model {
     public function get_connection()
     {
         return Connections::get($this->_connection);
+    }
+
+    /**
+     * Gets the bind value.
+     *
+     * @return  integer
+     */
+    public function get_bind_value(/* ... */)
+    {
+        return $this->get_primary_key()->get_value();
     }
 }

@@ -11,10 +11,15 @@ define('FLAMES_VERSION', '1.0.0-RC3');
 // The creator
 define('FLAMES_MASTERMIND', 'Nickolas Whiting');
 
+$path = dirname(realpath(__FILE__));
 // Add this to include path
-$flames_path = dirname(realpath(__FILE__));
-set_include_path($flames_path.'/../../' . PATH_SEPARATOR . get_include_path());
+set_include_path(
+    $path . '/../../' . PATH_SEPARATOR . get_include_path()
+);
 
 if (!class_exists('prggmr')) {
     require_once 'prggmr/src/prggmr.php';
 }
+
+require_once $path.'/utils.php';
+unset($path);
