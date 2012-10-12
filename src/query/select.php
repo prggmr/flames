@@ -36,7 +36,7 @@ class Select extends \flames\Query {
         $query[] = implode(', ', $fields);
         // Table Selection
         $query[] = 'FROM';
-        $query[] = $model->get_table();
+        $query[] = '`' . $model->get_table() . '`';
         // WHERE lookup
         $query[] = $this->build_where();
         if (null !== $this->_orderby) {
