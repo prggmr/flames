@@ -14,11 +14,11 @@ require_once 'model.php';
 $model = new User();
 $record = $model->select()->where([
     ['username__startswith' => 'jboyer'],
-])->exec()->first();
+])->order_by('RAND()', 'desc')->limit(0, 25)->exec(true);
 
-echo $record->user_id.PHP_EOL;
-$record->username = "jboyer";
-$query = $record->delete();
-var_dump($query);
-$record->delete()->exec();
-echo $record->user_id.PHP_EOL;
+var_dump($record->get_result());
+
+// echo $record->user_id.PHP_EOL;
+// $record->username = "jboyer";
+// $record->delete()->exec();
+// echo $record->user_id.PHP_EOL;
