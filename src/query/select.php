@@ -28,17 +28,47 @@ class Select extends \flames\Query {
         // Field selection
         $fields = [];
         foreach ($this->_fields as $_field) {
-            if (!$_field instanceof \flames\Field) {
-                $_field = $model->get_field($_field);
-            }
-            $fields[] = sprintf('`%s`', $_field->get_db_field_name());
+            $fields[] = $this->_build_select_field($_field);
         }
         $query[] = implode(', ', $fields);
         // Table Selection
         $query[] = 'FROM';
-        $query[] = $model->get_table();
+        $query[] = '`' . $model->get_table() . '`';
         // WHERE lookup
         $query[] = $this->build_where();
+        if (null !== $this->_orderby) {
+            $query[] = $this->_orderby;
+        }
+        if (null !== $this->_limit) {
+            $query[] = $this->_limit;
+        }
         return $model->get_connection()->prepare(implode(" ", $query));
+    }
+
+    /**
+     * Builds a field for selection this allows for select modifiers such as 
+     * AVG, ROUND, MIN, MAX etc by using field__(operator)
+     *
+     * @param  string  $field  Field name
+     *
+     * @return  string
+     */
+    protected function _build_select_field($field)
+    {
+        if (strpos($field, '__') === false) {
+            if (!$field instanceof \flames\Field) {
+                $field = $this->get_model()->get_field($field);
+            }
+            return sprintf('`%s`', 
+                $field->get_db_field_name()
+            );
+        }
+        list($field, $operator) = explode('__', $field);
+        $operator = '\\flames\\query\\operator\\'.ucfirst($operator);
+        if (!$field instanceof \flames\Field) {
+            $field = $this->get_model()->get_field($field, true);
+        }
+        $operator = new $operator($field);
+        return $operator->get_operation();
     }
 }

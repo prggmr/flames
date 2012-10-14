@@ -52,6 +52,11 @@ class Field implements query\bind\Value {
     protected $_dirty = false;
 
     /**
+     * Is unique.
+     */
+    protected $_unique = false;
+
+    /**
      * Construct a field object.
      */
     public function __construct(/* ... */){}
@@ -185,6 +190,12 @@ class Field implements query\bind\Value {
      */
     public function get_db_keys(/* ... */)
     {
+        if ($this->_unique) {
+            return sprintf('UNIQUE KEY `%s` (`%s`)',
+                $this->_field,
+                $this->_field
+            );
+        }
         return null;
     }
 

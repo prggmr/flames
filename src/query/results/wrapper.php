@@ -87,7 +87,7 @@ class Wrapper implements \Iterator, \ArrayAccess {
      */
     public function end(/* ... */)
     {
-        return end($this->_make_model($this->_storage));
+        return $this->_make_model(end($this->_storage));
     }
 
     /**
@@ -107,7 +107,7 @@ class Wrapper implements \Iterator, \ArrayAccess {
      */
     public function next(/* ... */) 
     {
-        return next($this->_make_model($this->_storage));
+        $ode = $this->_make_model(next($this->_storage));
     }
 
     /**
@@ -117,7 +117,7 @@ class Wrapper implements \Iterator, \ArrayAccess {
      */
     public function prev(/* ... */)
     {
-        return prev($this->_make_model($this->_storage));
+        return $this->_make_model(prev($this->_storage));
     }
 
     /**

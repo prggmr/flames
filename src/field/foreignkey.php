@@ -50,7 +50,7 @@ class Foreignkey extends \flames\field\Integer {
             ));
         }
         if (!isset($options['field'])) {
-            if(stripos('_id', $options['name']) === false) {
+            if(stripos($options['name'], '_id') === false) {
                 $field = sprintf('%s_id', $options['name']);
             } else {
                 $field = $options['name'];

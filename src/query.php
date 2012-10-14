@@ -27,6 +27,16 @@ class Query {
     protected $_model = null;
 
     /**
+     * ORDER BY clause
+     */
+    protected $_orderby = null;
+
+    /**
+     * LIMIT clause
+     */
+    protected $_limit = null;
+
+    /**
      * Constructs a new query.
      *
      * @param  null|array  Fields to select.
@@ -88,5 +98,57 @@ class Query {
     public function build_query(/* ... */)
     {
         throw new \RuntimeException("Method not implemented");
+    }
+
+    /**
+     * Adds an order by clause to the query.
+     *
+     * @param  string  $field  Field to order by
+     * @param  string  $dir  Direction of the order.
+     *
+     * @return  this
+     */
+    public function order_by($field, $dir = 'ASC')
+    {
+        if (strpos($field, ',') !== false) {
+            $field = explode(',', $field);
+        } else {
+            $field = [$field];
+        }
+
+        $fields = [];
+        foreach ($field as $_field) {
+            try {
+                $_field = $this->get_model()->get_field($_field);
+                $fields[] = sprintf('`%s`', $_field->get_db_field_name());
+            } catch (\Exception $e) {
+                // Non field name such as RAND()
+                $fields[] = $_field;
+            }
+        }
+
+        $this->_orderby = sprintf('ORDER BY %s %s', 
+            implode(", ", $fields), 
+            strtoupper($dir)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Adds a LIMIT clause to the query.
+     *
+     * @param  integer  $start  Start of the limit
+     * @param  integer  $amount  Amount of results to return.
+     *
+     * @return  this
+     */
+    public function limit($start, $amount)
+    {
+        $this->_limit = sprintf('LIMIT %d,%d',
+            intval($start),
+            intval($amount)
+        );
+        return $this;
     }
 }

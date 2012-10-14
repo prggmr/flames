@@ -26,6 +26,13 @@ class Model implements query\bind\Value {
     protected $_aliases = [];
 
     /**
+     * Temporary fields returned from a query
+     *
+     * @var  array
+     */
+    protected $_tmp = [];
+
+    /**
      * Is this model dirty?
      *
      * @var  boolean
@@ -46,7 +53,7 @@ class Model implements query\bind\Value {
      */
     protected $_ignore = [
         '_ignore', '_connection', '_dirty', '_fields', '_table', '_engine',
-        '_charset', '_primary', '_aliases'
+        '_charset', '_primary', '_aliases', '_tmp'
     ];
 
     /**
@@ -161,8 +168,9 @@ class Model implements query\bind\Value {
         }
         if (is_array($values) && count($values) != 0) {
             foreach ($values as $_key => $_value) {
-                // This must be made to the get_field to allow for aliases
-                $this->get_field($_key)->set_value($_value, $set);
+                // This must be made to the get_field to allow for aliases and
+                // tmp fields being setup properly from the DB
+                $this->get_field($_key, true)->set_value($_value, $set);
             }
         }
         // Model construction does not make it dirty
@@ -196,16 +204,7 @@ class Model implements query\bind\Value {
      */
     final public function __set($field, $val)
     {
-        if (!isset($this->_fields[$field])) {
-            if (!isset($this->_aliases[$field])) {
-                throw new \RuntimeException(sprintf(
-                    "Model %s has no field %s",
-                    get_class($this), $field
-                ));
-            }
-            $field = $this->_aliases[$field];
-        }
-        $field = $this->_fields[$field];
+        $field = $this->get_field($field);
         $this->_dirty = true;
         $field->set_value($val);
         $field->mark_dirty();
@@ -221,16 +220,7 @@ class Model implements query\bind\Value {
      */
     final public function __get($field)
     {
-        if (!isset($this->_fields[$field])) {
-            if (!isset($this->_aliases[$field])) {
-                throw new \RuntimeException(sprintf(
-                    "Model %s has no field %s",
-                    get_class($this), $field
-                ));
-            }
-            $field = $this->_aliases[$field];
-        }
-        return $this->_fields[$field]->get_value();
+        return $this->get_field($field)->get_value();
     }
 
     /**
@@ -280,17 +270,30 @@ class Model implements query\bind\Value {
      * Returns a specific field in the model.
      *
      * @param  string  $field  Field name
+     * @param  boolean  $tmp  Set as a temp field if doesnt exit
      *
      * @return  object
      */
-    public function get_field($field)
+    public function get_field($field, $tmp = false)
     {
         if (!isset($this->_fields[$field])) {
             if (!isset($this->_aliases[$field])) {
-                throw new \RuntimeException(sprintf(
-                    "Model %s has no field %s",
-                    get_class($this), $field
-                ));
+                if (!isset($this->_tmp[$field])) {
+                    if ($tmp) {
+                        $_field = new Field();
+                        $_field->set_attributes([
+                            'name' => $field,
+                            'field' => $field
+                        ]);
+                        $this->_tmp[$field] = $_field;
+                    } else {
+                        throw new \RuntimeException(sprintf(
+                            "Model %s has no field %s",
+                            get_class($this), $field
+                        ));
+                    }
+                }
+                return $this->_tmp[$field];
             }
             $field = $this->_aliases[$field];
         }
@@ -344,7 +347,12 @@ class Model implements query\bind\Value {
      */
     public function has_field($field)
     {
-        return isset($this->_fields[$field]);
+        try {
+            $this->get_field($field);
+            return true;
+        } catch (\RuntimeException $e) {
+            return false;
+        }
     }
 
     /**
@@ -403,7 +411,7 @@ class Model implements query\bind\Value {
             define('FLAMES_DELETE_REGISTERED', true);
             \prggmr\listen(new \flames\listener\Delete());
         }
-        return new \flames\query\Delete($fields, $this);
+        return new \flames\query\Delete(null, $this);
     }
 
     /**
@@ -423,7 +431,7 @@ class Model implements query\bind\Value {
      *
      * @return  \flames\query\results\Wrapper
      */
-    public static function find($where = null)
+    public static function find($where = [])
     {
         $model = get_called_class();
         $model = new $model();
