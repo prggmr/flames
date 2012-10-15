@@ -22,3 +22,8 @@ var_dump($record->get_result());
 // $record->username = "jboyer";
 // $record->delete()->exec();
 // echo $record->user_id.PHP_EOL;
+
+/**
+ * Count Records
+ */
+$user_total = User::find()->exec->count();
