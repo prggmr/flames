@@ -20,6 +20,11 @@ class Base extends \prggmr\signal\Complex {
     protected $_model = null;
 
     /**
+     * The SQL Query type
+     */
+    protected $_query = null;
+
+    /**
      * Constructs a new flames model.
      *
      * @param  object  $model
@@ -29,6 +34,7 @@ class Base extends \prggmr\signal\Complex {
     public function __construct($model)
     {
         $this->_model = $model;
+        $this->_query = \flames\get_class_name($this);
     }
     
     /**
@@ -40,7 +46,8 @@ class Base extends \prggmr\signal\Complex {
      */
     public function evaluate($signal = null) 
     {
-        if (!$signal instanceof $this) return false;
+        if ($this->_query != \flames\get_class_name($signal)) return false;
+        if (!$signal instanceof \flames\signal\Base) return false;
         if ($signal->get_model() instanceof $this->_model) return true;
         return false;
     }

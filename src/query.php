@@ -72,19 +72,14 @@ class Query {
         $array = explode('\\', get_class($this));
         $name = array_pop($array);
         $event = '\\flames\\query\\event\\'.$name;
-        $model = '\\flames\\signal\\model\\'.$name;
         $signal = '\\flames\\signal\\'.$name;
         $query = $this->build_query();
         if (false === $query) {
             return false;
         }
         $event = new $event($this, $query);
-        $model_signal = \prggmr\signal(
-            new $model($this->get_model()),
-            $event
-        );
-        $select_signal = \prggmr\signal(
-            new $signal(),
+        \prggmr\signal(
+            new $signal($this->get_model()),
             $event
         );
         return ($return_event) ? $event : $event->get_result();

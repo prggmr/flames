@@ -93,7 +93,7 @@ final class Connections {
      *
      * @return  array
      */
-    public function get_connections()
+    public function get_connections(/* ... */)
     {
         return array_keys(static::$_connections);
     }

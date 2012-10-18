@@ -35,7 +35,6 @@ class Delete extends \flames\Query {
         $query[] = $this->build_where();
         // Table Selection
         $exec = $model->get_connection()->prepare(implode(" ", $query));
-        $model->$primary_name = null;
         return $exec;
     }
 }
