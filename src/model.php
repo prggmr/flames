@@ -47,16 +47,6 @@ class Model implements query\bind\Value {
     protected $_connection = null;
 
     /**
-     * Property names to ignore when constructing the model.
-     *
-     * @var  array
-     */
-    protected $_ignore = [
-        '_ignore', '_connection', '_dirty', '_fields', '_table', '_engine',
-        '_charset', '_primary', '_aliases', '_tmp'
-    ];
-
-    /**
      * Table name.
      *
      * @var  string
@@ -92,7 +82,7 @@ class Model implements query\bind\Value {
     {
         $properties = get_object_vars($this);
         foreach ($properties as $_name => $_property) {
-            if (in_array($_name, $this->_ignore)) continue;
+            if (strpos($_property, '_') === 0) continue;
             $name = null;
             $attributes = null;
             if (!is_array($_property)){
