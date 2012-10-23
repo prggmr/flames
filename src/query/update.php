@@ -28,7 +28,7 @@ class Update extends \flames\Query {
             return false;
         }
         $query = ["UPDATE"];
-        $query[] = $model->get_table();
+        $query[] = '`' . $model->get_table() . '`';
         $query[] = 'SET';
         // Field selection
         $values = [];
