@@ -29,7 +29,7 @@ class Delete extends \flames\Query {
         $primary_name = $primary->get_name();
         if (null === $primary->get_value()) return false;
         $query = ["DELETE FROM"];
-        $query[] = $model->get_table();
+        $query[] = '`' . $model->get_table() . '`';
         // Add the primary key for the where
         $this->where([$primary_name => $primary->get_value()]);
         $query[] = $this->build_where();
