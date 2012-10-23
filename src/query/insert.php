@@ -25,7 +25,7 @@ class Insert extends \flames\Query {
     {
         $query = ["INSERT INTO"];
         $model = $this->get_model();
-        $query[] = $model->get_table();
+        $query[] = '`' . $model->get_table() . '`';
         $query[] = '(';
         // Field selection
         $fields = [];
