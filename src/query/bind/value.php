@@ -8,7 +8,7 @@ namespace flames\query\bind;
 
 
 /**
- * Interface that for classes to return bindable values.
+ * Interface for classes to return bindable PDO values.
  */
 interface Value {
     /**

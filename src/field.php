@@ -236,7 +236,7 @@ class Field implements query\bind\Value {
      *
      * @return  void
      */
-    public function mark_dirty()
+    public function mark_dirty(/* ... */)
     {
         $this->_dirty = true;
     }
@@ -246,7 +246,7 @@ class Field implements query\bind\Value {
      *
      * @return  void
      */
-    public function is_dirty()
+    public function is_dirty(/* ... */)
     {
         return $this->_dirty;
     }

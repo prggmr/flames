@@ -128,9 +128,9 @@ trait Where {
         if ($bind) {
             $key = $this->to_bind_var($field);
         }
-        extract($this->generate_field($field, $key, $value), EXTR_OVERWRITE);
+        $lookup = $this->generate_lookup($field, $key, $value);
         if ($bind) {
-            $this->_bind($key, $field);
+            $this->_bind($key, $lookup);
         }
         if (false !== $clause) {
             $block[] = $clause;
@@ -166,14 +166,14 @@ trait Where {
     }
 
     /**
-     * Parses field syntax based on "__lookup" structure.
+     * Generates a lookup object based on the "fieldname__lookup" structure.
      *
      * @param  string  $string  Field string to parse
      * @param  string  $key  The PDO bind key
      *
      * @return  array
      */
-    public function generate_field($string, $key = null, $value = null)
+    public function generate_lookup($string, $key = null, $value = null)
     {
         if (stripos($string, '__') === false) {
             $lookup = 'e';
@@ -195,9 +195,6 @@ trait Where {
                 $lookup
             ));
         }
-        return [
-            'field' => $field, 
-            'lookup' => new $name($field->get_db_field_name(), $key)
-        ];
+        return new $name($field, $key);
     }
 }

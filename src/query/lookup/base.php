@@ -6,13 +6,15 @@ namespace flames\query\lookup;
  * that can be found in the LICENSE file.
  */
 
+use \flames\query\bind\Value as Value,
+    \flames\Field as Field;
 
 /**
  * Base Where lookup
  *
- * This allows for building where lookup statements.
+ * This allows for building and executing where lookup statements.
  */
-class Base {
+class Base implements Value {
 
     /**
      * Field used in the lookup.
@@ -31,13 +33,13 @@ class Base {
     /**
      * Constructs the class.
      *
-     * @param  string  $field  
+     * @param  object  $field  
      * @param  string|null  $key  PDO bind key
      * @param  mixed  $value  The value for the lookup
      *
      * @return  void
      */
-    public function __construct($field, $key = null)
+    public function __construct(Field $field, $key = null)
     {
         $this->_field = $field;
         $this->_key = $key;
@@ -51,5 +53,25 @@ class Base {
     public function get_lookup(/* ... */)
     {
         throw new \RuntimeException('Method not implemented');
+    }
+
+    /**
+     * Returns the value
+     *
+     * @return  string
+     */
+    public function get_bind_value(/* ... */)
+    {
+        return $this->_field->get_value();
+    }
+
+    /**
+     * Returns the field in use for the lookup.
+     *
+     * @return  object  \flames\Field
+     */
+    public function get_field(/* .... */)
+    {
+        return $this->_field;
     }
 }

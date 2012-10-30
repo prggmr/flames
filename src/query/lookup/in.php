@@ -30,7 +30,7 @@ class In extends Base {
     {
         return sprintf(
             "%s IN [%s]",
-            $this->_field,
+            $this->_field->get_db_field_name(),
             $this->_key
         );
     }

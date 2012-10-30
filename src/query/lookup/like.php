@@ -23,7 +23,7 @@ class Like extends Base {
     {
         return sprintf(
             '`%s` LIKE %s',
-            $this->_field,
+            $this->_field->get_db_field_name(),
             $this->_key
         );
     }
@@ -35,6 +35,6 @@ class Like extends Base {
      */
     public function get_bind_value(/* ... */)
     {
-        return '%'.$this->_value.'%';
+        return '%'.$this->_field->get_value().'%';
     }
 }

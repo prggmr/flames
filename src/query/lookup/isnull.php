@@ -23,7 +23,7 @@ class Isnull extends Base {
     {
         return sprintf(
             "`%s` IS NULL",
-            $this->_field
+            $this->_field->get_db_field_name()
         );
     }
 

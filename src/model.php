@@ -82,7 +82,7 @@ class Model implements query\bind\Value {
     {
         $properties = get_object_vars($this);
         foreach ($properties as $_name => $_property) {
-            if (strpos($_property, '_') === 0) continue;
+            if (strpos($_name, '_') === 0) continue;
             $name = null;
             $attributes = null;
             if (!is_array($_property)){

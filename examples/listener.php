@@ -12,23 +12,23 @@ class Select_Listener extends \flames\Listener {
     /**
      * On a select statement
      */
-    public function on_select(\flames\events\Select $event) 
+    public function on_select(\flames\query\event\Select $event) 
     {
-        echo "Running SQL ".$event->get_sql();
+        echo "Running SQL ".$event->get_statement()->queryString;
     }
 }
 
-prggmr\signal_interrupt(new \flames\signal\Select(), new \prggmr\Handle(function(){
+prggmr\before(new \flames\signal\Select(), new \prggmr\Handle(function(){
     echo "Interrupting select statements!!".PHP_EOL;
     echo "Maybe I'll check the cache".PHP_EOL;
 }, null));
 
 // I will interrupt only on the User Model!!
-prggmr\signal_interrupt(new \flames\signal\model\Select(new User()), function(){
+prggmr\before(new \flames\signal\model\Select(new User()), function(){
     echo "This will interrupt only user selects!".PHP_EOL;
 });
 
-prggmr\signal_interrupt(new \flames\signal\model\Select(new Profile()), function(){
+prggmr\before(new \flames\signal\model\Select(new Profile()), function(){
     echo "This will interrupt only profile selects!".PHP_EOL;
 });
 

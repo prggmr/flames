@@ -33,14 +33,14 @@ prggmr\before(new \flames\signal\model\Update(new User()), function(){
 // $user->password = 'myPa$$word';
 // $user->save()->exec();
 
-$result = User::find([
-    'username__like' => 'pigface',
-    '&password' => 'myPa$$word'
-])->limit(0,1)->order_by('RAND()')->exec()->first();
-if (false !== $result) {
-    $result->username = "pigface";
-    $result->save()->exec();
-}
+// $result = User::find([
+//     'username__like' => 'pigface',
+//     '&password' => 'myPa$$word'
+// ])->limit(0,1)->order_by('RAND()')->exec()->first();
+// if (false !== $result) {
+//     $result->username = "pigface";
+//     $result->save()->exec();
+// }
 
 
 // /**

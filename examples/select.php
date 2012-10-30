@@ -13,7 +13,7 @@ require_once 'model.php';
  */
 $model = new User();
 $record = $model->select()->where([
-    ['username__startswith' => 'jboyer'],
+    ['username__startswith' => 'prg'],
 ])->order_by('RAND()', 'desc')->limit(0, 25)->exec(true);
 
 var_dump($record->get_result());
@@ -26,4 +26,4 @@ var_dump($record->get_result());
 /**
  * Count Records
  */
-$user_total = User::find()->exec->count();
+// $user_total = User::find()->exec->count();
