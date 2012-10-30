@@ -13,9 +13,11 @@ require_once 'model.php';
  */
 $model = new User();
 $record = $model->select()->where([
-    ['username__startswith' => 'prg'],
+    '&username__startswith' => 'prg',
+    '|username__endswith' => 'gmr'
 ])->order_by('RAND()', 'desc')->limit(0, 25)->exec(true);
 
+echo $record->get_statement()->queryString;
 var_dump($record->get_result());
 
 // echo $record->user_id.PHP_EOL;

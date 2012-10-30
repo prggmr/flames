@@ -162,7 +162,7 @@ trait Where {
                 $clause = $default;
                 break;
         }
-        return ['clause' => $clause, 'field' => $field];
+        return ['clause' => (false === $default) ? false : $clause, 'field' => $field];
     }
 
     /**
