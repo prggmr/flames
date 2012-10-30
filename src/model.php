@@ -228,10 +228,7 @@ class Model implements query\bind\Value {
      */
     public function __toString()
     {
-        throw new \RuntimeException(sprintf(
-            'Model %s has no toString method implemented',
-            get_class($this)
-        ));
+        return (string) $this->get_primary_key()->get_value();
     }
 
     /**
