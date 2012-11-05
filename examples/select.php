@@ -17,8 +17,7 @@ $record = $model->select()->where([
     '|username__endswith' => 'gmr'
 ])->order_by('RAND()', 'desc')->limit(0, 25)->exec(true);
 
-echo $record->get_statement()->queryString;
-var_dump($record->get_result());
+var_dump($record->get_parameters());
 
 // echo $record->user_id.PHP_EOL;
 // $record->username = "jboyer";

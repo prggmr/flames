@@ -29,7 +29,7 @@ class Insert extends \flames\Listener
     public function on_insert(\flames\query\event\Insert $event)
     {
         $this->exec_query($event);
-        $model = $event->get_query()->get_model();
+        $model = $event->get_flames_query()->get_model();
         $model->get_primary_key()->set_value($event->insert_id);
         return $event->insert_id;
     }

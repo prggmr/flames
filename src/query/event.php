@@ -48,9 +48,9 @@ class Event extends \prggmr\Event {
     }
 
     /**
-     * Returns the SQL statement for the event.
+     * Returns PDOStatement object for the event.
      *
-     * @return  boolean
+     * @return  object
      */
     public function get_statement(/* ... */) 
     {
@@ -58,11 +58,23 @@ class Event extends \prggmr\Event {
     }
 
     /**
-     * Returns the query being used in the signal.
+     * Returns the SQL Query for the event.
+     *
+     * This is a shorthand for $event->get_statement()->queryString
+     *
+     * @return  string
+     */
+    public function get_sql_query(/* ... */)
+    {
+        return $this->get_statement()->queryString;
+    }
+
+    /**
+     * Returns the flames query object being used in the signal.
      *
      * @return  object
      */
-    public function get_query(/* ... */)
+    public function get_flames_query(/* ... */)
     {
         return $this->_query;
     }
@@ -87,5 +99,19 @@ class Event extends \prggmr\Event {
     public function get_result(/* ... */)
     {
         return $this->_result;
+    }
+
+    /**
+     * Returns the parameters used for the query if any.
+     *
+     * @return  array
+     */
+    public function get_parameters(/* ... */)
+    {
+        $query = $this->get_flames_query();
+        if (method_exists($query, 'get_bind')) {
+            return $query->get_bind();
+        }
+        return [];
     }
 }

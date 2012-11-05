@@ -70,7 +70,7 @@ abstract class Driver extends \PDO {
      */
     public function exec_event_query(query\Event $event)
     {
-        $query = $event->get_query();
+        $query = $event->get_flames_query();
         $statement = $event->get_statement();
         $query->bind($statement);
         $transactions = $this->use_transactions();

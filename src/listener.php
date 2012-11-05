@@ -50,8 +50,9 @@ class Listener extends \prggmr\Listener
      */
     public function exec_query(query\Event $event)
     {
-        return $event->get_query()->get_model()->get_connection()->exec_event_query(
-            $event
-        );
+        return $event->get_flames_query()
+               ->get_model()
+               ->get_connection()
+               ->exec_event_query($event);
     }
 }

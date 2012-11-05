@@ -29,7 +29,9 @@ class Delete extends \flames\Listener
     public function on_delete(\flames\query\event\Delete $event)
     {
         $this->exec_query($event);
-        $event->get_query()->get_model()->get_primary_key()->set_value(null);
+        $event->get_flames_query()->get_model()->get_primary_key()->set_value(
+            null
+        );
         return true;
     }
 }

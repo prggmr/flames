@@ -31,7 +31,7 @@ class Select extends \flames\Listener
         $this->exec_query($event);
         $event->set_result(new \flames\query\results\Wrapper(
             $event->get_statement()->fetchAll(\PDO::FETCH_ASSOC),
-            $event->get_query()->get_model()
+            $event->get_flames_query()->get_model()
         ));
     }
 }
