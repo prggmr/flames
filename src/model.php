@@ -415,14 +415,15 @@ class Model implements query\bind\Value {
      * Static method for finding results.
      *
      * @param  array  $where  Where search lookup.
+     * @param  array|null  $select  Fields to select
      *
      * @return  \flames\query\results\Wrapper
      */
-    public static function find($where = [])
+    public static function find($where = [], $select = null)
     {
         $model = get_called_class();
         $model = new $model();
-        return $model->select()->where($where);
+        return $model->select($select)->where($where);
     }
     
     /**
