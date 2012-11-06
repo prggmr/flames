@@ -62,7 +62,7 @@ class Base implements Value {
      */
     public function get_bind_value(/* ... */)
     {
-        return $this->_field->get_value();
+        return $this->_field->get_bind_value();
     }
 
     /**
