@@ -19,6 +19,8 @@ $record = $model->select()->where([
 
 var_dump($record->get_parameters());
 
+var_dump($record);
+
 // echo $record->user_id.PHP_EOL;
 // $record->username = "jboyer";
 // $record->delete()->exec();

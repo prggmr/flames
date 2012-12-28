@@ -12,7 +12,7 @@ namespace flames\signal\model;
  *
  * This allows for selecting events based 
  */
-class Base extends \prggmr\signal\Complex {
+class Base extends \xpspl\signal\Complex {
 
     /**
      * The model object this signal represents

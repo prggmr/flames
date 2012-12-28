@@ -6,19 +6,20 @@
  */
 
 // library version
-define('FLAMES_VERSION', '1.0.0-RC3');
+define('FLAMES_VERSION', '1.0.0');
 
 // The creator
 define('FLAMES_MASTERMIND', 'Nickolas Whiting');
 
 $path = dirname(realpath(__FILE__));
+
 // Add this to include path
 set_include_path(
-    $path . '/../../' . PATH_SEPARATOR . get_include_path()
+    $path . '/../..' . PATH_SEPARATOR . get_include_path()
 );
 
-if (!class_exists('prggmr')) {
-    require_once 'prggmr/src/prggmr.php';
+if (!class_exists('xpspl')) {
+    require_once 'xpspl/src/xpspl.php';
 }
 
 require_once $path.'/utils.php';

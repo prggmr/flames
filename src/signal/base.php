@@ -10,7 +10,7 @@ namespace flames\signal;
  * Base signal used for models to issue - SELECT, UPDATE, DELETE and INSERT
  * commands.
  */
-class Base extends \prggmr\module\objects\Signal {
+class Base extends \xpspl\Signal {
 
     /**
      * The model object this signal represents

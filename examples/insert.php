@@ -5,7 +5,8 @@
  * that can be found in the LICENSE file.
  */
 
-require_once 'connection.php';
+save_signal_history(false);
+
 require_once 'model.php';
 
 /**
@@ -15,21 +16,20 @@ require_once 'model.php';
 // $model->username = 'nwhiting';
 // $model->save()->exec();
 
-prggmr\before(new \flames\signal\Select(), function(){
+before(new \flames\signal\Select(), function(){
     var_dump($this->get_statement());
     var_dump($this->get_query()->get_bind());
 });
 
 
-prggmr\before(new \flames\signal\model\Update(new User()), function(){
-    echo "RUNNING THIS";
+before(new \flames\signal\model\Insert(new User()), function(){
     // var_dump($this);
     var_dump($this->get_statement());
     // var_dump($this->get_query()->get_bind());
 });
 
 // $user = new User();
-// $user->username = 'prggmr';
+// $user->username = 'xpspl';
 // $user->password = 'myPa$$word';
 // $user->save()->exec();
 
@@ -49,8 +49,8 @@ prggmr\before(new \flames\signal\model\Update(new User()), function(){
 $profile = new Profile();
 $profile->first_name = "Nick";
 $profile->last_name = "Whiting";
-$profile->user->email = "prggmr@gmail.com";
-$profile->user->username = "prggmr";
+$profile->user->email = "xpspl@gmail.com";
+$profile->user->username = "xpspl";
 $profile->user->password = 'myPa$$word';
 $profile->save()->exec();
 // vaR_dump($profile);

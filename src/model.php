@@ -356,7 +356,7 @@ class Model implements query\bind\Value {
         }
         if (!defined('FLAMES_SELECT_REGISTERED')) {
             define('FLAMES_SELECT_REGISTERED', true);
-            \prggmr\listen(new \flames\listener\Select());
+            listen(new \flames\listener\Select());
         }
         return new \flames\query\Select($fields, $this);
     }
@@ -374,13 +374,13 @@ class Model implements query\bind\Value {
         if ($this->get_primary_key()->get_value() === null) {
             if (!defined('FLAMES_INSERT_REGISTERED')) {
                 define('FLAMES_INSERT_REGISTERED', true);
-                \prggmr\listen(new \flames\listener\Insert());
+                listen(new \flames\listener\Insert());
             }
             $query = new \flames\query\Insert($this->get_fields(), $this);
         } else {
             if (!defined('FLAMES_UPDATE_REGISTERED')) {
                 define('FLAMES_UPDATE_REGISTERED', true);
-                \prggmr\listen(new \flames\listener\Update());
+                listen(new \flames\listener\Update());
             }
             $query = new \flames\query\Update($this->get_fields(), $this);
         }
@@ -396,7 +396,7 @@ class Model implements query\bind\Value {
     {
         if (!defined('FLAMES_DELETE_REGISTERED')) {
             define('FLAMES_DELETE_REGISTERED', true);
-            \prggmr\listen(new \flames\listener\Delete());
+            listen(new \flames\listener\Delete());
         }
         return new \flames\query\Delete(null, $this);
     }

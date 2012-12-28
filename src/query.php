@@ -78,7 +78,7 @@ class Query {
             return false;
         }
         $event = new $event($this, $query);
-        \prggmr\signal(
+        emit(
             new $signal($this->get_model()),
             $event
         );

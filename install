@@ -14,10 +14,10 @@ fi;
 PHPPATH=$(php -r "echo get_include_path();") 
 INSTALLPATH=""
 BINPATH="/usr/bin"
-if [ ! -f "$BINPATH/prggmr" ]; 
+if [ ! -f "$BINPATH/xpspl" ]; 
 then
-    echo "installing prggmr"
-    curl prggmr.org/prggmr | sh
+    echo "installing xpspl"
+    curl xpspl.org/xpspl | sh
 fi;
 for x in $(echo $PHPPATH | tr ":" "\n")
 do

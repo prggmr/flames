@@ -9,9 +9,7 @@ namespace flames\query\lookup;
 
 /**
  * __in lookup
- *
  * 
- *
  * Builds f IN [?, ?, ?]
  */
 class In extends Base {

@@ -10,7 +10,7 @@ namespace flames\query;
  * Base event used for models to issue - SELECT, UPDATE, DELETE and INSERT
  * commands.
  */
-class Event extends \prggmr\Event {
+class Event extends \xpspl\Event {
 
     /**
      * The query object this event represents

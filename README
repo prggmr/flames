@@ -1,13 +1,13 @@
 # Welcome to flames
 
 flames is an Event Driven ORM for PHP based on Django and built 
-with [prggmr](http://prggmr.org).
+with [xpspl](http://xpspl.org).
 
 Currently flames supports only MySQL.
 
 ## Run'n Gun Install
 
-    $ curl prggmr.org/flames/flames | sh
+    $ curl xpspl.org/flames/flames | sh
 
 And
 
@@ -81,7 +81,7 @@ the ```save()``` method.
 
     <?php
     $user = new User();
-    $user->username = 'prggmr';
+    $user->username = 'xpspl';
     $user->password = 'myPa$$word';
     $user->save()->exec();
     // We now have an id
@@ -92,7 +92,7 @@ This results in the following SQL: ( broken for sanity )
     INSERT INTO user 
     ( `username`, `password` ) 
     VALUES 
-    ( "prggmr", "9353be3c53a16e869ab988db92f8ee1d3ef0287b" )
+    ( "xpspl", "9353be3c53a16e869ab988db92f8ee1d3ef0287b" )
 
 Notice the ```password``` field is hashed?
 
@@ -106,7 +106,7 @@ Now that we have a record in the database let's select it.
 
     <?php
     $user = User::find([
-        'username' => 'prggmr',
+        'username' => 'xpspl',
         'password' => 'myPa$$word'
     ])->first();
     echo "Hello, ".$user->username;
@@ -116,7 +116,7 @@ This results in the following SQL: ( broken for sanity )
     SELECT `user_id`, `username`, `password` 
     FROM user 
     WHERE 
-    `username` = "prggmr" 
+    `username` = "xpspl" 
     AND 
     `password` = "9353be3c53a16e869ab988db92f8ee1d3ef0287b"
 
@@ -133,7 +133,7 @@ model result.
 
     <?php
     $user = User::find([
-        'username' => 'prggmr',
+        'username' => 'xpspl',
         'password' => 'myPa$$word'
     ])->first();
     // Set their username to "pigface"
@@ -142,7 +142,7 @@ model result.
 
 This results in the following SQL:
 
-    UPDATE user SET `username` = "prggmr" WHERE `user_id` = 1
+    UPDATE user SET `username` = "xpspl" WHERE `user_id` = 1
 
 Notice we only updated the ```user``` field, flames will only update fields 
 that have changed since retrieval.
@@ -154,7 +154,7 @@ method on the found result.
 
     <?php
     $user = User::find([
-        'username' => 'prggmr',
+        'username' => 'xpspl',
         'password' => 'myPa$$word'
     ])->first();
     $user->delete()->exec();

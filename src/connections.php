@@ -93,8 +93,35 @@ final class Connections {
      *
      * @return  array
      */
-    public function get_connections(/* ... */)
+    public static function get_connections(/* ... */)
     {
         return array_keys(static::$_connections);
+    }
+
+    /**
+     * Disconnect a connected database.
+     *
+     * @param  string|null  $name  Name of the database connection or null for 
+     *                             default.
+     *
+     * @return  void
+     */
+    public static function disconnect($name = null) 
+    {
+        if ($name === null) {
+            if (static::$_default === null) {
+                throw new \RuntimeException(
+                    "A default connection has not been established."
+                );
+            }
+            $name = static::$_default;
+        }
+        if (!isset(static::$_connection[$name])) {
+            throw new \LogicException(sprintf(
+                'Connection %d cannot be disconnected because it doesnt exist.'
+            , $name));
+        }
+        static::$_connections[$name] = null;
+        unset(static::$_connection[$name]);
     }
 }

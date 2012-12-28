@@ -15,7 +15,7 @@ namespace flames\query\results;
  */
 class Wrapper implements \Iterator, \ArrayAccess {
 
-    use \prggmr\Storage;
+    use \xpspl\Storage;
 
 
     /**

@@ -5,7 +5,6 @@
  * that can be found in the LICENSE file.
  */
 
-require_once 'connection.php';
 require_once 'model.php';
 
 // Create a table using the create_table method
