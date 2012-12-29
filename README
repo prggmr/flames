@@ -1,23 +1,21 @@
 # Welcome to flames
 
 flames is an Event Driven ORM for PHP based on Django and built 
-with [xpspl](http://xpspl.org).
+with [xpspl](http://xpspl.prggmr.org).
 
 Currently flames supports only MySQL.
 
-## Run'n Gun Install
+## Install
 
-    $ curl xpspl.org/flames/flames | sh
+Download zip from master.
 
-And
+Include in configuration.
 
     <?php
 
     require_once 'flames/src/flames.php'
 
-For a manual or Windows installation see the [install](install.html) doc.
-
-## Lighting your flame
+## Quickstart Guide
 
 This quick introduction will get you up and running!
 
